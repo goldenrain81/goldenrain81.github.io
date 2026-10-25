@@ -1,0 +1,731 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="description" content="한국스마트융합산업협회 - 산업을 연결하고 융합으로 시장을 창출하다">
+<title>한국스마트융합산업협회</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400;500;700;900&display=swap">
+<style>
+/* 레이아웃: 상단 고정 헤더 + 메뉴별 화면 전환(해시), 1200px 중앙 컬럼, 하위 페이지는 좌측 하위메뉴 + 본문 */
+:root{
+  --bg:#FFFFFF; --soft:#F5F6F8; --line:#E4E6EB; --fg:#15171C; --muted:#565B66;
+  --ink:#15171C; --on-ink:#FFFFFF; --ink-soft:#23262E; --on-ink-muted:#C9CCD3;
+  --accent:#FF6A3D; --hero:#FFF7F2; --hero-line:#FFD2C0;
+  --ip-bg:#FFE3D6; --ip-fg:#9A3412; --mk-bg:#DCE6FF; --mk-fg:#1E3A8A; --dm-bg:#D5F2E8; --dm-fg:#065F46;
+  --card:#FFFFFF; --shadow:0 8px 24px rgba(21,23,28,.06);
+  --font:'Noto Sans KR', 'Apple SD Gothic Neo', 'Malgun Gothic', system-ui, sans-serif;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#121317; --soft:#1A1C21; --line:#2C2F37; --fg:#ECEDF0; --muted:#A3A8B3;
+  --ink:#ECEDF0; --on-ink:#121317; --ink-soft:#22252C; --on-ink-muted:#A3A8B3;
+  --accent:#FF7A50; --hero:#1E1714; --hero-line:#4A2A1E;
+  --ip-bg:#3A2219; --ip-fg:#FFB79A; --mk-bg:#1C2643; --mk-fg:#AFC3FF; --dm-bg:#14332A; --dm-fg:#8FE0C2;
+  --card:#1A1C21; --shadow:none; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#121317; --soft:#1A1C21; --line:#2C2F37; --fg:#ECEDF0; --muted:#A3A8B3;
+  --ink:#ECEDF0; --on-ink:#121317; --ink-soft:#22252C; --on-ink-muted:#A3A8B3;
+  --accent:#FF7A50; --hero:#1E1714; --hero-line:#4A2A1E;
+  --ip-bg:#3A2219; --ip-fg:#FFB79A; --mk-bg:#1C2643; --mk-fg:#AFC3FF; --dm-bg:#14332A; --dm-fg:#8FE0C2;
+  --card:#1A1C21; --shadow:none; color-scheme:dark}
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:16px;line-height:1.7;word-break:keep-all}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:30;background:var(--bg)}
+a{color:inherit;text-decoration:none}
+a:focus-visible,button:focus-visible,input:focus-visible,select:focus-visible,textarea:focus-visible{outline:3px solid var(--accent);outline-offset:2px}
+h1,h2,h3{text-wrap:balance;letter-spacing:-.02em;line-height:1.3;margin:0}
+p{margin:0}
+.wrap{max-width:1200px;margin:0 auto;padding-left:max(24px,env(safe-area-inset-left,0px));padding-right:max(24px,env(safe-area-inset-right,0px))}
+@media (max-width:600px){.wrap{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}}
+
+/* header */
+.util{background:var(--soft);border-bottom:1px solid var(--line);font-size:13px}
+.util .wrap{display:flex;justify-content:flex-end;gap:20px;height:38px;align-items:center}
+.util a{color:var(--muted)}
+header.site{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:var(--bg);border-bottom:1px solid var(--line)}
+header.site .wrap{display:flex;align-items:center;justify-content:space-between;gap:16px;padding-block:14px}
+.logo{display:flex;align-items:center;gap:12px}
+.logo b{display:block;font-size:18px;font-weight:900;letter-spacing:-.02em;line-height:1.25}
+.logo small{display:block;font-size:10.5px;color:var(--muted);letter-spacing:.03em;line-height:1.3}
+nav.main{display:flex;flex-wrap:wrap;gap:2px 20px;font-size:15px;font-weight:700}
+nav.main a{padding:8px 0;border-bottom:2px solid transparent}
+nav.main a[aria-current="page"]{border-bottom-color:var(--accent)}
+.menu-btn{display:none;width:44px;height:44px;border:1px solid var(--line);border-radius:12px;background:var(--bg);color:var(--fg);cursor:pointer;align-items:center;justify-content:center}
+@media (max-width:1080px){
+  .menu-btn{display:flex}
+  nav.main{display:none;position:absolute;left:0;right:0;top:100%;background:var(--bg);border-bottom:1px solid var(--line);flex-direction:column;padding:8px max(16px,env(safe-area-inset-left,0px)) 16px}
+  nav.main.open{display:flex}
+  nav.main a{padding:12px 0;border-bottom:1px solid var(--line)}
+  nav.main a[aria-current="page"]{color:var(--accent);border-bottom-color:var(--line)}
+}
+
+/* buttons, chips */
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:50px;padding:0 26px;border-radius:12px;font-size:16px;font-weight:700;border:1.5px solid var(--ink);cursor:pointer;font-family:inherit}
+.btn.primary{background:var(--ink);color:var(--on-ink)}
+.btn.ghost{background:transparent;color:var(--fg)}
+.btn.accent{background:var(--accent);border-color:var(--accent);color:#15171C}
+.btn.line-light{border-color:var(--on-ink);color:var(--on-ink);background:transparent}
+.chip{display:inline-block;font-size:12px;font-weight:700;padding:3px 10px;border-radius:999px;line-height:1.5}
+.chip.ip{background:var(--ip-bg);color:var(--ip-fg)} .chip.mk{background:var(--mk-bg);color:var(--mk-fg)} .chip.dm{background:var(--dm-bg);color:var(--dm-fg)}
+.ph{color:var(--muted);background:var(--soft);border:1px dashed var(--line);border-radius:4px;padding:0 4px;font-size:.92em}
+
+/* sections */
+section.band{padding-block:84px}
+section.band.soft{background:var(--soft)}
+.sec-head{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:12px;margin-bottom:32px}
+.sec-head h2{font-size:30px;font-weight:900}
+.sec-head p{color:var(--muted);margin-top:6px}
+.more{font-size:15px;font-weight:700}
+
+/* hero */
+.hero{background:var(--hero)}
+.hero .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:56px;padding-block:80px}
+.hero-copy{flex:1 1 460px;min-width:0;display:flex;flex-direction:column;gap:22px}
+.eyebrow{align-self:flex-start;font-size:13px;font-weight:700;padding:6px 14px;border-radius:999px;background:var(--bg);border:1px solid var(--hero-line);color:var(--ip-fg)}
+.hero h1{font-size:clamp(34px,5vw,52px);font-weight:900;letter-spacing:-.03em;line-height:1.2}
+.hero-copy p{font-size:18px;color:var(--muted);max-width:34em}
+.row-btns{display:flex;flex-wrap:wrap;gap:12px}
+.flow{flex:1 1 400px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.flow-card{display:flex;align-items:center;gap:18px;background:var(--card);border-radius:20px;padding:20px 22px;box-shadow:var(--shadow);border:1px solid var(--line)}
+.flow-card .ico{width:54px;height:54px;flex:none;border-radius:16px;display:flex;align-items:center;justify-content:center}
+.flow-card strong{display:block;font-size:18px}
+.flow-card span{font-size:14px;color:var(--muted)}
+.flow-arrow{display:flex;justify-content:center;color:var(--muted)}
+.globe-line{display:flex;align-items:center;gap:10px;font-size:14px;font-weight:700;color:var(--mk-fg);background:var(--mk-bg);border-radius:14px;padding:12px 16px}
+
+/* grids */
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:20px}
+.card{display:flex;flex-direction:column;gap:12px;padding:26px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
+.card strong{font-size:18px}
+.card span.d{font-size:14.5px;color:var(--muted)}
+.card .go{margin-top:auto;font-size:14px;font-weight:700}
+.card:hover{border-color:var(--fg)}
+
+/* member */
+.tabs{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.tab{min-height:44px;padding:0 20px;border-radius:999px;border:1px solid var(--line);background:var(--card);color:var(--fg);font-family:inherit;font-size:15px;font-weight:500;cursor:pointer}
+.tab[aria-selected="true"]{background:var(--ink);color:var(--on-ink);border-color:var(--ink);font-weight:700}
+.member{display:flex;flex-direction:column;gap:14px;padding:22px;border-radius:20px;background:var(--card);border:1px solid var(--line)}
+.member .top{display:flex;gap:14px;align-items:center}
+.logo-box{width:54px;height:54px;flex:none;border-radius:14px;background:var(--soft);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted)}
+.member p{font-size:14px;color:var(--muted)}
+
+/* showcase */
+.show{display:flex;flex-wrap:wrap;gap:20px}
+.show .big{flex:2 1 440px;min-width:0;display:flex;flex-direction:column;gap:10px}
+.show .side{flex:1 1 260px;min-width:0;display:flex;flex-direction:column;gap:20px}
+.img{border-radius:20px;display:flex;align-items:center;justify-content:center;font-size:14px;text-align:center;padding:12px}
+.img.ip{background:var(--ip-bg);color:var(--ip-fg)} .img.mk{background:var(--mk-bg);color:var(--mk-fg)} .img.dm{background:var(--dm-bg);color:var(--dm-fg)}
+.kicker{font-size:13px;font-weight:700}
+
+/* news */
+.news-grid{display:flex;flex-wrap:wrap;gap:40px}
+.news-grid > div{min-width:0}
+.list-box{background:var(--card);border-radius:20px;padding:4px 22px;border:1px solid var(--line)}
+.list-box a{display:flex;align-items:center;gap:14px;padding:16px 0;border-bottom:1px solid var(--line);font-size:15px}
+.list-box a:last-child{border-bottom:0}
+.list-box .t{flex:1;min-width:0}
+.tag{flex:none;font-size:12px;font-weight:700;padding:3px 10px;border-radius:6px;background:var(--soft);color:var(--muted)}
+.date{flex:none;font-size:13px;color:var(--muted);font-variant-numeric:tabular-nums}
+.event{display:flex;align-items:center;gap:16px;background:var(--card);border:1px solid var(--line);border-radius:16px;padding:16px 18px}
+.cal{width:58px;flex:none;display:flex;flex-direction:column;align-items:center;padding:6px 0;border-radius:12px;background:var(--ink);color:var(--on-ink);line-height:1.3}
+.cal b{font-size:21px}
+.cal span{font-size:12px}
+
+/* join band */
+.join{background:#15171C;color:#FFFFFF}
+.join .wrap{display:flex;flex-wrap:wrap;gap:48px;align-items:center;padding-block:80px}
+.join .copy{flex:1 1 400px;min-width:0;display:flex;flex-direction:column;gap:16px}
+.join h2{font-size:32px;font-weight:900}
+.join p{color:#C9CCD3}
+.join .types{flex:1 1 400px;min-width:0;display:flex;flex-wrap:wrap;gap:14px}
+.join .type{flex:1 1 160px;padding:22px;border-radius:16px;background:#23262E;display:flex;flex-direction:column;gap:6px}
+.join .type span{font-size:14px;color:#C9CCD3}
+.join .btn.line-light{border-color:#FFFFFF;color:#FFFFFF}
+
+/* sub pages */
+.page-hero{background:var(--soft);border-bottom:1px solid var(--line)}
+.page-hero .wrap{padding-block:48px;display:flex;flex-direction:column;gap:8px}
+.crumb{font-size:13px;color:var(--muted)}
+.page-hero h1{font-size:clamp(28px,4vw,40px);font-weight:900}
+.page-hero p{color:var(--muted)}
+.page-body .wrap{display:flex;flex-wrap:wrap;gap:48px;padding-block:56px}
+.subnav{flex:1 1 200px;max-width:240px;display:flex;flex-direction:column;gap:4px;align-self:flex-start;position:sticky;top:calc(env(safe-area-inset-top,0px) + 96px)}
+.subnav a{padding:10px 14px;border-radius:10px;font-size:15px;color:var(--muted);font-weight:500}
+.subnav a:hover{background:var(--soft);color:var(--fg)}
+.content{flex:999 1 560px;min-width:0;display:flex;flex-direction:column;gap:64px}
+@media (max-width:860px){.subnav{position:static;max-width:none;flex-direction:row;flex-wrap:wrap;gap:6px}.subnav a{border:1px solid var(--line);padding:8px 14px}}
+.block{display:flex;flex-direction:column;gap:18px;scroll-margin-top:110px}
+.block > h2{font-size:24px;font-weight:900;padding-bottom:14px;border-bottom:2px solid var(--fg)}
+.block h3{font-size:18px;font-weight:700}
+.prose{display:flex;flex-direction:column;gap:16px;max-width:42em;font-size:16.5px;line-height:1.85}
+.greet-title{font-size:26px;font-weight:900;color:var(--ip-fg);line-height:1.4}
+.sign{font-weight:700;margin-top:8px}
+.sign b{font-size:20px;margin-left:8px}
+ul.clean,ol.clean{margin:0;padding-left:1.3em;display:flex;flex-direction:column;gap:8px}
+.values{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:14px}
+.value{padding:20px;border-radius:16px;background:var(--soft);display:flex;flex-direction:column;gap:6px}
+.value b{font-size:18px}
+.value span{font-size:14px;color:var(--muted)}
+.vision{padding:28px;border-radius:20px;background:var(--hero);border:1px solid var(--hero-line);display:flex;flex-direction:column;gap:6px}
+.vision small{font-size:13px;font-weight:700;color:var(--ip-fg);letter-spacing:.04em}
+.vision b{font-size:22px;line-height:1.45}
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:14px}
+table{border-collapse:collapse;width:100%;min-width:520px;font-size:15px}
+th,td{text-align:left;padding:14px 16px;border-bottom:1px solid var(--line);vertical-align:top}
+th{background:var(--soft);font-weight:700;font-size:14px}
+tr:last-child td{border-bottom:0}
+.org{display:flex;flex-direction:column;align-items:center;gap:10px;padding:24px;border:1px solid var(--line);border-radius:20px;overflow-x:auto}
+.org .n{padding:10px 22px;border-radius:12px;border:1.5px solid var(--fg);font-weight:700;background:var(--card);white-space:nowrap}
+.org .n.top{background:var(--ink);color:var(--on-ink)}
+.org .lvl{display:flex;flex-wrap:wrap;justify-content:center;gap:10px}
+.org .n.s{border-width:1px;font-weight:500;font-size:14px}
+.org .v{width:1.5px;height:18px;background:var(--muted)}
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px;counter-reset:s;list-style:none;margin:0;padding:0}
+.steps li{padding:18px;border-radius:16px;border:1px solid var(--line);background:var(--card);display:flex;flex-direction:column;gap:4px;font-size:14px;color:var(--muted)}
+.steps li b{font-size:16px;color:var(--fg)}
+.steps li::before{counter-increment:s;content:counter(s);width:28px;height:28px;border-radius:999px;background:var(--ink);color:var(--on-ink);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:13px;margin-bottom:6px}
+.info{display:grid;grid-template-columns:max-content 1fr;gap:10px 20px;font-size:15px}
+.info dt{font-weight:700} .info dd{margin:0;color:var(--muted)}
+.map{height:240px;border-radius:20px;background:var(--soft);border:1px dashed var(--line);display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:14px}
+
+/* forms */
+form.f{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;padding:26px;border:1px solid var(--line);border-radius:20px;background:var(--card)}
+form.f .full{grid-column:1/-1}
+@media (max-width:640px){form.f{grid-template-columns:minmax(0,1fr)}}
+.field{display:flex;flex-direction:column;gap:6px;font-size:14px;font-weight:700}
+.field input,.field select,.field textarea{font:inherit;font-weight:400;font-size:15px;min-height:46px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--bg);color:var(--fg);width:100%}
+.field textarea{min-height:110px;resize:vertical}
+.check{display:flex;gap:8px;align-items:center;font-size:14px}
+.check input{width:20px;height:20px}
+.done{grid-column:1/-1;padding:14px 16px;border-radius:12px;background:var(--dm-bg);color:var(--dm-fg);font-weight:700;font-size:14.5px}
+.faq details{border-bottom:1px solid var(--line);padding:18px 0}
+.faq summary{font-weight:700;cursor:pointer;font-size:16px;list-style:none;display:flex;gap:10px}
+.faq summary::before{content:"Q";color:var(--accent);font-weight:900}
+.faq details p{margin-top:10px;color:var(--muted);padding-left:22px}
+
+footer{border-top:1px solid var(--line);background:var(--bg)}
+footer .wrap{padding-block:40px 48px;display:flex;flex-direction:column;gap:20px}
+footer nav{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:14px}
+footer .addr{font-size:13px;color:var(--muted);display:flex;flex-direction:column;gap:4px}
+footer .addr strong{color:var(--fg);font-size:15px}
+@media (prefers-reduced-motion:no-preference){.view{animation:fade .25s ease}@keyframes fade{from{opacity:.4}to{opacity:1}}}
+</style>
+<style>html{color-scheme:light}body{margin:0}img{max-width:100%}[hidden]{display:none!important}</style>
+</head>
+<body>
+
+<div class="util"><div class="wrap"><a href="#join">회원가입</a><a href="#support">고객지원</a><a href="#about">사이트맵</a></div></div>
+<header class="site">
+  <div class="wrap">
+    <a class="logo" href="#home" aria-label="한국스마트융합산업협회 홈">
+      <svg width="42" height="42" viewBox="0 0 44 44" aria-hidden="true"><circle cx="16" cy="17" r="11" fill="#FF6A3D" opacity=".9"/><circle cx="28" cy="17" r="11" fill="#3B6BF5" opacity=".85"/><circle cx="22" cy="28" r="11" fill="#18A57E" opacity=".85"/></svg>
+      <span><b>한국스마트융합산업협회</b><small>Korea Smart Convergence Industry Association</small></span>
+    </a>
+    <button class="menu-btn" id="menuBtn" aria-label="메뉴 열기" aria-expanded="false" aria-controls="mainNav">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+    <nav class="main" id="mainNav" aria-label="주 메뉴">
+      <a href="#about">협회소개</a><a href="#members">회원사</a><a href="#matching">매칭·비즈니스</a><a href="#showcase">쇼케이스</a><a href="#business">주요사업</a><a href="#join">회원안내</a><a href="#news">알림마당</a><a href="#library">자료실</a><a href="#support">고객지원</a>
+    </nav>
+  </div>
+</header>
+
+<main>
+<!-- ================= HOME ================= -->
+<div class="view" data-view="home">
+  <section class="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow">콘텐츠 × 제조 × 수요 · 국내에서 세계로</span>
+        <h1>산업을 연결하고<br>융합으로 시장을 창출하다</h1>
+        <p>캐릭터·IP 기업, 굿즈 제작사, 콘텐츠 수요 기업이 한자리에 모여 함께 성장하고, 함께 세계 시장으로 나아가는 스마트 융합 산업 생태계를 만듭니다.</p>
+        <div class="row-btns"><a class="btn primary" href="#members">회원사 찾기</a><a class="btn ghost" href="#join">협회 가입하기</a></div>
+      </div>
+      <div class="flow" aria-label="협회가 잇는 세 분야">
+        <div class="flow-card"><div class="ico" style="background:var(--ip-bg);color:var(--ip-fg)"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="8"/><path d="M9 14.5c1.6 1.4 4.4 1.4 6 0M9.5 10h.01M14.5 10h.01"/></svg></div><div><strong>IP·콘텐츠 기업</strong><span>캐릭터 · 웹툰 · 애니메이션 · 디자인</span></div></div>
+        <div class="flow-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 2v14M4 10l6 6 6-6"/></svg></div>
+        <div class="flow-card"><div class="ico" style="background:var(--mk-bg);color:var(--mk-fg)"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l9-5 9 5v10H3z"/><path d="M3 9l9 5 9-5M12 14v5"/></svg></div><div><strong>제작·생산 기업</strong><span>인형 · 문구 · 의류잡화 · 인쇄 · 스마트 굿즈</span></div></div>
+        <div class="flow-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 2v14M4 10l6 6 6-6"/></svg></div>
+        <div class="flow-card"><div class="ico" style="background:var(--dm-bg);color:var(--dm-fg)"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16l-1.5 11h-13z"/><path d="M9 7a3 3 0 0 1 6 0"/></svg></div><div><strong>수요 기업</strong><span>유통 · 공공기관 · 판촉 · 관광·축제</span></div></div>
+        <div class="globe-line"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c3 3 3 15 0 18M12 3c-3 3-3 15 0 18"/></svg>해외 전시회 · 수출 상담 · 글로벌 네트워크로 세계 시장까지</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="band"><div class="wrap">
+    <div class="sec-head"><div><h2>무엇을 찾고 계신가요?</h2><p>목적에 맞는 회원사와 서비스로 바로 연결해 드립니다.</p></div></div>
+    <div class="cards">
+      <a class="card" href="#matching"><strong>캐릭터·IP 라이선싱</strong><span class="d">상품화할 캐릭터와 IP를 찾고 라이선스를 문의하세요.</span><span class="go">라이선싱 문의 →</span></a>
+      <a class="card" href="#matching"><strong>굿즈 제작 의뢰</strong><span class="d">품목에 맞는 제작사를 연결해 견적을 받아보세요.</span><span class="go">제작 의뢰 →</span></a>
+      <a class="card" href="#matching"><strong>협업 파트너 찾기</strong><span class="d">공동 기획, 컬래버레이션 등 협업을 제안해 보세요.</span><span class="go">협업 제안 →</span></a>
+      <a class="card" href="#business"><strong>글로벌 진출</strong><span class="d">해외 전시회와 수출 상담회, 해외 바이어 연결을 지원합니다.</span><span class="go">해외 진출 지원 →</span></a>
+    </div>
+  </div></section>
+
+  <section class="band soft"><div class="wrap">
+    <div class="sec-head"><div><h2>회원사를 만나보세요</h2><p>분야별로 협회 회원사를 찾아보고 바로 문의할 수 있습니다.</p></div><a class="more" href="#members">전체 회원사 보기 →</a></div>
+    <div class="cards" data-members="6"></div>
+  </div></section>
+
+  <section class="band"><div class="wrap">
+    <div class="sec-head"><div><h2>쇼케이스</h2><p>회원사의 캐릭터와 굿즈, 협업 프로젝트를 소개합니다.</p></div><a class="more" href="#showcase">더 보기 →</a></div>
+    <div class="show">
+      <a class="big" href="#showcase"><div class="img ip" style="height:320px">대표 협업 프로젝트 이미지</div><span class="kicker" style="color:var(--ip-fg)">협업 프로젝트</span><strong style="font-size:20px"><span class="ph">IP 기업</span> × <span class="ph">제작사</span> × <span class="ph">수요기업</span> 협업 굿즈</strong></a>
+      <div class="side">
+        <a href="#showcase" style="display:flex;flex-direction:column;gap:8px"><div class="img mk" style="height:140px">캐릭터 이미지</div><span class="kicker" style="color:var(--mk-fg)">캐릭터·IP</span><strong><span class="ph">캐릭터명</span> · <span class="ph">IP 기업명</span></strong></a>
+        <a href="#showcase" style="display:flex;flex-direction:column;gap:8px"><div class="img dm" style="height:140px">굿즈 제품 이미지</div><span class="kicker" style="color:var(--dm-fg)">굿즈 제품</span><strong><span class="ph">제품명</span> · <span class="ph">제작사명</span></strong></a>
+      </div>
+    </div>
+  </div></section>
+
+  <section class="band soft"><div class="wrap news-grid">
+    <div style="flex:3 1 460px">
+      <div class="sec-head" style="margin-bottom:18px"><h2 style="font-size:24px">공지사항 · 협회 소식</h2><a class="more" href="#news">더 보기 →</a></div>
+      <div class="list-box" data-news="5"></div>
+    </div>
+    <div style="flex:2 1 300px">
+      <div class="sec-head" style="margin-bottom:18px"><h2 style="font-size:24px">행사 일정</h2><a class="more" href="#news">캘린더 →</a></div>
+      <div style="display:flex;flex-direction:column;gap:12px" data-events="3"></div>
+    </div>
+  </div></section>
+
+  <section class="join"><div class="wrap">
+    <div class="copy">
+      <h2>협회와 함께<br>새로운 비즈니스를 시작하세요</h2>
+      <p>회원사 등록, 비즈니스 매칭, 국내외 전시회 공동관 참가 등 회원만을 위한 혜택을 누릴 수 있습니다.</p>
+      <div class="row-btns"><a class="btn accent" href="#join">회원 가입 신청</a><a class="btn line-light" href="#join">회원 혜택 보기</a></div>
+    </div>
+    <div class="types">
+      <div class="type"><strong>정회원</strong><span>IP·콘텐츠, 제작·생산, 수요 분야 법인 및 개인사업자</span></div>
+      <div class="type"><strong>준회원</strong><span>창업 초기 기업, 1인 창작자·디자이너</span></div>
+      <div class="type"><strong>특별회원</strong><span>지자체, 공공기관, 대학, 유관 단체</span></div>
+    </div>
+  </div></section>
+</div>
+
+<!-- ================= 협회소개 ================= -->
+<div class="view" data-view="about" hidden>
+  <div class="page-hero"><div class="wrap"><span class="crumb">홈 › 협회소개</span><h1>협회소개</h1><p>산업을 연결하고 융합으로 시장을 창출하는 한국스마트융합산업협회입니다.</p></div></div>
+  <div class="page-body"><div class="wrap">
+    <nav class="subnav" aria-label="협회소개 하위 메뉴"><a href="#greeting">인사말</a><a href="#vision">설립 목적 및 비전</a><a href="#history">연혁</a><a href="#org">조직도 및 임원</a><a href="#rules">정관 및 규정</a><a href="#location">오시는 길</a></nav>
+    <div class="content">
+      <article class="block" id="greeting">
+        <h2>인사말</h2>
+        <div class="prose">
+          <p class="greet-title">산업을 연결하고<br>융합으로 시장을 창출하다</p>
+          <p>안녕하십니까. 한국스마트융합산업협회 회장 김광만입니다.</p>
+          <p>좋은 캐릭터와 콘텐츠는 많지만, 그것이 손에 잡히는 상품이 되어 시장에서 사랑받기까지는 여전히 많은 벽이 있습니다. IP를 가진 기업은 믿을 만한 제작사를 찾기 어렵고, 제작사는 새로운 IP와 판로를 찾기 어려우며, 콘텐츠가 필요한 기업과 기관은 누구와 손잡아야 할지 막막합니다.</p>
+          <p>한국스마트융합산업협회는 이 세 주체가 한자리에서 만나는 연결의 장을 만들고자 설립되었습니다. 캐릭터·IP 기업, 굿즈 제작·생산 기업, 콘텐츠 수요 기업이 서로의 강점을 나누고 협업할 때, 혼자서는 만들 수 없던 새로운 시장이 열린다고 믿습니다.</p>
+          <p>협회는 회원사 간 비즈니스 매칭, 라이선싱과 제작 지원, 전시회와 판로 개척, 정부 지원사업 연계 등을 통해 회원사의 성장을 실질적으로 돕겠습니다. 아울러 공정한 거래 문화와 품질 기준을 세워 산업 전체의 신뢰를 높이는 데 앞장서겠습니다.</p>
+          <p>나아가 협회는 회원사의 무대를 세계로 넓히겠습니다. 해외 전시회와 수출 상담회, 해외 라이선싱 에이전시·유통사와의 네트워크, 해외 유관 기관과의 협력을 통해 우리 캐릭터와 굿즈가 세계 시장에서 경쟁할 수 있도록 글로벌 연계와 진출을 적극 지원하겠습니다.</p>
+          <p>협회의 문은 언제나 열려 있습니다. 함께 연결하고, 세계로 함께 성장하는 길에 여러분을 초대합니다. 감사합니다.</p>
+          <p class="sign">한국스마트융합산업협회 회장 <b>김광만</b></p>
+        </div>
+      </article>
+
+      <article class="block" id="vision">
+        <h2>설립 목적 및 비전</h2>
+        <div class="prose"><p><strong>설립 목적</strong> 콘텐츠(IP), 제조, 수요 산업 간 연결과 협업을 촉진하여 융합 산업 생태계를 조성하고, 회원사의 경쟁력 강화와 글로벌 시장 진출을 지원합니다.</p></div>
+        <div class="vision"><small>VISION</small><b>콘텐츠와 제조가 만나 새로운 시장을 만들고 세계로 나아가는 대한민국 대표 융합 산업 플랫폼</b></div>
+        <h3>핵심 가치</h3>
+        <div class="values">
+          <div class="value"><b>연결</b><span>IP·제작·수요 기업을 잇는 비즈니스 네트워크</span></div>
+          <div class="value"><b>융합</b><span>분야의 경계를 넘는 협업으로 새로운 상품과 시장 창출</span></div>
+          <div class="value"><b>신뢰</b><span>공정한 거래 기준과 품질 관리로 산업의 신뢰 구축</span></div>
+          <div class="value"><b>성장</b><span>판로, 교육, 지원사업 연계를 통한 회원사 동반 성장</span></div>
+          <div class="value"><b>글로벌</b><span>해외 네트워크와 협력으로 세계 시장 진출 지원</span></div>
+        </div>
+        <h3>중점 추진 과제</h3>
+        <ol class="clean">
+          <li>회원사 간 비즈니스 매칭 및 협업 활성화</li>
+          <li>캐릭터·IP 라이선싱과 상품화 지원</li>
+          <li>국내외 전시회 참가, 해외 네트워크 구축을 통한 글로벌 진출 지원</li>
+          <li>산업 표준, 품질 기준, 공정 거래 문화 정립</li>
+          <li>정부·지자체와 협력한 산업 육성 정책 제안</li>
+        </ol>
+      </article>
+
+      <article class="block" id="history">
+        <h2>연혁</h2>
+        <div class="tbl"><table><thead><tr><th style="width:120px">연도</th><th style="width:80px">월</th><th>내용</th></tr></thead><tbody>
+          <tr><td><span class="ph">연도</span></td><td><span class="ph">월</span></td><td><span class="ph">첫 전시회 참가, MOU 체결 등 주요 내용</span></td></tr>
+          <tr><td><span class="ph">연도</span></td><td><span class="ph">월</span></td><td><span class="ph">비영리 사단법인 설립 허가 등 주요 내용</span></td></tr>
+          <tr><td><span class="ph">연도</span></td><td><span class="ph">월</span></td><td>한국스마트융합산업협회 창립총회</td></tr>
+        </tbody></table></div>
+      </article>
+
+      <article class="block" id="org">
+        <h2>조직도 및 임원</h2>
+        <div class="org" aria-label="협회 조직도">
+          <div class="n top">총회</div><div class="v"></div>
+          <div class="n">이사회</div><div class="v"></div>
+          <div class="lvl"><div class="n">회장</div><div class="n s">감사</div></div><div class="v"></div>
+          <div class="n s">부회장단</div><div class="v"></div>
+          <div class="lvl"><div class="n s">IP·콘텐츠 분과</div><div class="n s">제작·생산 분과</div><div class="n s">수요·유통 분과</div><div class="n s">사무국</div></div>
+        </div>
+        <div class="tbl"><table><thead><tr><th>직위</th><th>성명</th><th>소속</th></tr></thead><tbody>
+          <tr><td>회장</td><td><strong>김광만</strong></td><td><span class="ph">소속</span></td></tr>
+          <tr><td>부회장</td><td><span class="ph">성명</span></td><td><span class="ph">소속</span></td></tr>
+          <tr><td>이사</td><td><span class="ph">성명</span></td><td><span class="ph">소속</span></td></tr>
+          <tr><td>감사</td><td><span class="ph">성명</span></td><td><span class="ph">소속</span></td></tr>
+          <tr><td>사무국장</td><td><span class="ph">성명</span></td><td>사무국</td></tr>
+        </tbody></table></div>
+      </article>
+
+      <article class="block" id="rules">
+        <h2>정관 및 규정</h2>
+        <p style="color:var(--muted)">한국스마트융합산업협회는 정관과 규정에 따라 투명하고 공정하게 운영됩니다.</p>
+        <div class="list-box">
+          <a href="#rules"><span class="tag">PDF</span><span class="t">협회 정관</span><span class="date">내려받기</span></a>
+          <a href="#rules"><span class="tag">PDF</span><span class="t">회원 관리 규정</span><span class="date">내려받기</span></a>
+          <a href="#rules"><span class="tag">PDF</span><span class="t">회비 규정</span><span class="date">내려받기</span></a>
+          <a href="#rules"><span class="tag">PDF</span><span class="t">윤리 규정</span><span class="date">내려받기</span></a>
+        </div>
+      </article>
+
+      <article class="block" id="location">
+        <h2>오시는 길</h2>
+        <div class="map">지도 영역 (카카오맵 또는 네이버 지도 연동)</div>
+        <dl class="info">
+          <dt>주소</dt><dd><span class="ph">협회 주소</span></dd>
+          <dt>전화</dt><dd><span class="ph">000-0000-0000</span></dd>
+          <dt>팩스</dt><dd><span class="ph">000-0000-0000</span></dd>
+          <dt>이메일</dt><dd><span class="ph">이메일 주소</span></dd>
+          <dt>지하철</dt><dd><span class="ph">노선, 역 이름, 출구 번호, 도보 시간</span></dd>
+          <dt>버스</dt><dd><span class="ph">정류장 이름, 노선 번호</span></dd>
+          <dt>주차</dt><dd><span class="ph">주차 가능 여부 및 안내</span></dd>
+        </dl>
+      </article>
+    </div>
+  </div></div>
+</div>
+
+<!-- ================= 회원사 ================= -->
+<div class="view" data-view="members" hidden>
+  <div class="page-hero"><div class="wrap"><span class="crumb">홈 › 회원사</span><h1>회원사</h1><p>한국스마트융합산업협회와 함께하는 회원사를 소개합니다. 분야로 찾아보고 필요한 파트너에게 바로 문의해 보세요.</p></div></div>
+  <section class="band" style="padding-block:48px 84px"><div class="wrap">
+    <div class="field" style="max-width:420px;margin-bottom:20px"><label for="memberSearch">회사명·키워드 검색</label><input id="memberSearch" type="search" placeholder="예: 봉제 인형, 웹툰, 판촉"></div>
+    <div class="tabs" role="tablist" aria-label="회원사 분야">
+      <button class="tab" role="tab" data-filter="all" aria-selected="true">전체</button>
+      <button class="tab" role="tab" data-filter="ip" aria-selected="false">IP·콘텐츠</button>
+      <button class="tab" role="tab" data-filter="mk" aria-selected="false">제작·생산</button>
+      <button class="tab" role="tab" data-filter="dm" aria-selected="false">수요기업</button>
+    </div>
+    <p id="filterNote" style="color:var(--muted);margin-bottom:20px;font-size:15px"></p>
+    <div class="cards" id="memberList"></div>
+    <p style="margin-top:28px;font-size:14px;color:var(--muted)">회원사 카드는 예시입니다. 회원사가 마이페이지에서 회사 정보, 로고, 포트폴리오를 등록하면 이 자리에 게시됩니다.</p>
+  </div></section>
+</div>
+
+<!-- ================= 매칭·비즈니스 ================= -->
+<div class="view" data-view="matching" hidden>
+  <div class="page-hero"><div class="wrap"><span class="crumb">홈 › 매칭·비즈니스</span><h1>매칭·비즈니스</h1><p>협회가 IP 기업, 제작사, 수요 기업을 직접 연결해 드립니다.</p></div></div>
+  <div class="page-body"><div class="wrap">
+    <nav class="subnav" aria-label="매칭 하위 메뉴"><a href="#m-guide">매칭 안내</a><a href="#m-license">라이선싱 문의</a><a href="#m-make">굿즈 제작 의뢰</a><a href="#m-collab">협업 제안 게시판</a><a href="#m-cases">성공 사례</a></nav>
+    <div class="content">
+      <article class="block" id="m-guide">
+        <h2>비즈니스 매칭 안내</h2>
+        <p style="color:var(--muted)">원하는 협업 내용을 남겨 주시면 협회 사무국이 조건에 맞는 회원사를 찾아 소개합니다. 회원과 비회원 모두 신청할 수 있으며, 회원은 우선 매칭됩니다.</p>
+        <ol class="steps">
+          <li><b>매칭 신청</b>협업 유형과 조건을 양식에 작성</li>
+          <li><b>요청 검토</b>사무국이 내용 확인, 필요 시 추가 정보 요청</li>
+          <li><b>파트너 추천</b>조건에 맞는 회원사 후보 안내</li>
+          <li><b>미팅 주선</b>양측 동의 후 온라인·대면 미팅 연결</li>
+          <li><b>계약 및 협업</b>당사자 간 계약, 표준 계약서 제공</li>
+          <li><b>사후 관리</b>진행 상황 확인, 성공 사례 공유</li>
+        </ol>
+      </article>
+      <article class="block" id="m-license">
+        <h2>캐릭터·IP 라이선싱 문의</h2>
+        <p style="color:var(--muted)">상품화하고 싶은 캐릭터나 IP가 있으신가요? 회원사가 보유한 IP의 라이선스 조건을 문의할 수 있습니다.</p>
+        <form class="f" data-form>
+          <div class="field"><label for="l-co">회사명</label><input id="l-co" required></div>
+          <div class="field"><label for="l-name">담당자</label><input id="l-name" required></div>
+          <div class="field"><label for="l-tel">연락처</label><input id="l-tel" type="tel" required></div>
+          <div class="field"><label for="l-ip">관심 캐릭터·IP</label><input id="l-ip" placeholder="캐릭터명 또는 보유 회사"></div>
+          <div class="field"><label for="l-item">상품화 품목</label><input id="l-item" placeholder="예: 인형, 문구, 의류"></div>
+          <div class="field"><label for="l-ch">판매 채널</label><select id="l-ch"><option>온라인</option><option>오프라인 매장</option><option>판촉·기념품</option><option>해외 수출</option></select></div>
+          <div class="field full"><label for="l-msg">문의 내용</label><textarea id="l-msg"></textarea></div>
+          <div class="full"><button class="btn primary" type="submit">라이선싱 문의 보내기</button></div>
+        </form>
+      </article>
+      <article class="block" id="m-make">
+        <h2>굿즈 제작 의뢰</h2>
+        <p style="color:var(--muted)">만들고 싶은 굿즈를 알려 주세요. 품목에 맞는 제작 회원사를 연결해 견적을 받아볼 수 있습니다.</p>
+        <form class="f" data-form>
+          <div class="field"><label for="g-co">회사·기관명</label><input id="g-co" required></div>
+          <div class="field"><label for="g-tel">담당자 연락처</label><input id="g-tel" type="tel" required></div>
+          <div class="field"><label for="g-item">제작 품목</label><input id="g-item" placeholder="예: 봉제 인형 키링"></div>
+          <div class="field"><label for="g-qty">수량</label><input id="g-qty" type="number" min="1" placeholder="개"></div>
+          <div class="field"><label for="g-due">희망 납기</label><input id="g-due" type="date"></div>
+          <div class="field"><label for="g-use">사용 목적</label><select id="g-use"><option>판매용</option><option>판촉·기념품</option><option>행사·축제</option><option>수출</option></select></div>
+          <div class="field full"><label for="g-msg">요청 사항 (디자인 보유 여부, 예산 범위 등)</label><textarea id="g-msg"></textarea></div>
+          <div class="full"><button class="btn primary" type="submit">견적 요청하기</button></div>
+        </form>
+      </article>
+      <article class="block" id="m-collab">
+        <h2>협업 제안 게시판</h2>
+        <p style="color:var(--muted)">공동 기획, 컬래버레이션, 공동 마케팅 등 회원사 간 협업 제안을 자유롭게 올려 주세요. 글쓰기는 회원만 가능합니다.</p>
+        <div class="list-box">
+          <a href="#m-collab"><span class="chip ip">IP 찾음</span><span class="t"><span class="ph">제안 제목</span></span><span class="tag">모집 중</span></a>
+          <a href="#m-collab"><span class="chip mk">제작사 찾음</span><span class="t"><span class="ph">제안 제목</span></span><span class="tag">협의 중</span></a>
+          <a href="#m-collab"><span class="chip dm">협업 제안</span><span class="t"><span class="ph">제안 제목</span></span><span class="tag">완료</span></a>
+        </div>
+      </article>
+      <article class="block" id="m-cases">
+        <h2>매칭·협업 성공 사례</h2>
+        <p style="color:var(--muted)">협회를 통해 만나 새로운 상품과 시장을 만든 회원사의 이야기입니다.</p>
+        <div class="cards">
+          <div class="card"><div class="img ip" style="height:150px">사례 대표 이미지</div><strong><span class="ph">프로젝트명</span></strong><span class="d">참여: <span class="ph">IP 기업</span> · <span class="ph">제작사</span> · <span class="ph">수요기업</span></span><span class="d"><span class="ph">출시 제품, 판매처 등 성과</span></span></div>
+          <div class="card"><div class="img mk" style="height:150px">사례 대표 이미지</div><strong><span class="ph">프로젝트명</span></strong><span class="d">참여: <span class="ph">IP 기업</span> · <span class="ph">제작사</span> · <span class="ph">수요기업</span></span><span class="d"><span class="ph">출시 제품, 판매처 등 성과</span></span></div>
+        </div>
+      </article>
+    </div>
+  </div></div>
+</div>
+
+<!-- ================= 쇼케이스 ================= -->
+<div class="view" data-view="showcase" hidden>
+  <div class="page-hero"><div class="wrap"><span class="crumb">홈 › 쇼케이스</span><h1>쇼케이스</h1><p>회원사가 만든 캐릭터와 굿즈, 그리고 함께 만든 협업 프로젝트를 한눈에 만나보세요.</p></div></div>
+  <div class="page-body"><div class="wrap">
+    <nav class="subnav" aria-label="쇼케이스 하위 메뉴"><a href="#s-ip">캐릭터·IP 갤러리</a><a href="#s-goods">굿즈 제품 갤러리</a><a href="#s-project">협업 프로젝트</a></nav>
+    <div class="content">
+      <article class="block" id="s-ip"><h2>캐릭터·IP 갤러리</h2><div class="cards" data-gallery="ip"></div></article>
+      <article class="block" id="s-goods"><h2>굿즈 제품 갤러리</h2><div class="cards" data-gallery="mk"></div></article>
+      <article class="block" id="s-project"><h2>협업 프로젝트</h2><div class="cards" data-gallery="dm"></div></article>
+    </div>
+  </div></div>
+</div>
+
+<!-- ================= 주요사업 ================= -->
+<div class="view" data-view="business" hidden>
+  <div class="page-hero"><div class="wrap"><span class="crumb">홈 › 주요사업</span><h1>주요사업</h1><p>회원사가 더 많은 기회를 만나고 더 넓은 시장, 세계 시장으로 나아갈 수 있도록 다섯 가지 핵심 사업을 추진합니다.</p></div></div>
+  <div class="page-body"><div class="wrap">
+    <nav class="subnav" aria-label="주요사업 하위 메뉴"><a href="#b-expo">전시회·박람회</a><a href="#b-edu">교육·세미나</a><a href="#b-gov">지원사업 연계</a><a href="#b-quality">품질·인증·표준화</a><a href="#b-global">해외 진출 지원</a></nav>
+    <div class="content">
+      <article class="block" id="b-expo"><h2>전시회·박람회 참가 지원</h2><p style="color:var(--muted)">국내외 캐릭터·라이선싱·굿즈 관련 전시회에 협회 공동관을 운영하여, 회원사가 적은 비용으로 참가하고 바이어를 만날 수 있도록 지원합니다.</p><ul class="clean"><li>공동관 부스 운영, 참가비 일부 지원, 홍보물 제작, 바이어 상담 주선</li><li>대상 전시회: <span class="ph">전시회명 목록</span></li><li>신청: 알림마당의 모집 공고 확인 후 신청</li></ul></article>
+      <article class="block" id="b-edu"><h2>교육·세미나</h2><p style="color:var(--muted)">라이선싱 계약, 저작권과 상표권, 상품 기획, 판로 개척 등 현장에서 바로 쓸 수 있는 실무 교육을 제공합니다.</p><ul class="clean"><li>주요 과정: 캐릭터 라이선싱 실무, IP 보호와 계약, 굿즈 기획과 원가 관리, 온라인 판로 개척, 해외 진출 전략</li><li>운영 방식: 정기 세미나, 실무 워크숍, 온라인 강의</li></ul></article>
+      <article class="block" id="b-gov"><h2>정부·지자체 지원사업 연계</h2><p style="color:var(--muted)">콘텐츠, 제조, 수출 분야의 정부·지자체 지원사업을 회원사에 안내하고, 신청 준비를 돕습니다.</p><ul class="clean"><li>지원사업 공고 큐레이션 및 회원사 알림</li><li>사업계획서 작성 설명회 및 컨설팅</li><li>협회 주관·수행 사업: <span class="ph">사업명</span></li></ul></article>
+      <article class="block" id="b-quality"><h2>품질·인증 및 표준화</h2><p style="color:var(--muted)">굿즈 제품의 안전성과 품질을 높이고, 공정한 라이선스 거래 문화를 만들기 위한 기준을 마련합니다.</p><ul class="clean"><li>제품 안전 인증(KC 등) 안내 및 지원</li><li>라이선스 계약서, 제작 발주서 등 표준 서식 보급</li><li>회원사 품질 관리 가이드 제작</li></ul></article>
+      <article class="block" id="b-global"><h2>해외 진출 지원</h2><p style="color:var(--muted)">회원사의 캐릭터와 굿즈가 해외 시장에 진출할 수 있도록 해외 바이어 발굴과 수출 상담을 지원합니다.</p><ul class="clean"><li>해외 전시회 참가 및 수출 상담회 운영</li><li>해외 라이선싱 에이전시·유통사 네트워크 연결</li><li>해외 상표 출원 및 IP 보호 안내</li></ul></article>
+    </div>
+  </div></div>
+</div>
+
+<!-- ================= 회원안내 ================= -->
+<div class="view" data-view="join" hidden>
+  <div class="page-hero"><div class="wrap"><span class="crumb">홈 › 회원안내</span><h1>회원안내</h1><p>콘텐츠·제조·수요 산업에 종사하는 기업과 기관, 개인이라면 누구나 협회와 함께할 수 있습니다.</p></div></div>
+  <div class="page-body"><div class="wrap">
+    <nav class="subnav" aria-label="회원안내 하위 메뉴"><a href="#j-type">회원 구분 및 자격</a><a href="#j-benefit">회원 혜택</a><a href="#j-step">가입 절차</a><a href="#j-apply">가입 신청</a></nav>
+    <div class="content">
+      <article class="block" id="j-type"><h2>회원 구분 및 자격</h2>
+        <div class="tbl"><table><thead><tr><th>구분</th><th>자격</th><th>의결권</th><th>연회비</th></tr></thead><tbody>
+          <tr><td><strong>정회원</strong></td><td>협회 목적에 동의하는 IP·콘텐츠, 제작·생산, 수요 분야 법인 및 개인사업자</td><td>있음</td><td><span class="ph">금액</span></td></tr>
+          <tr><td><strong>준회원</strong></td><td>창업 초기 기업, 1인 창작자·디자이너 등</td><td>없음</td><td><span class="ph">금액</span></td></tr>
+          <tr><td><strong>특별회원</strong></td><td>지자체, 공공기관, 대학, 유관 단체 등</td><td>없음</td><td><span class="ph">금액 또는 면제</span></td></tr>
+        </tbody></table></div>
+        <p style="font-size:14px;color:var(--muted)">입회비: <span class="ph">금액 또는 없음</span></p>
+      </article>
+      <article class="block" id="j-benefit"><h2>회원 혜택</h2>
+        <div class="values">
+          <div class="value"><b>회원사 등록</b><span>홈페이지 회원사 디렉토리 등록 및 포트폴리오 게시</span></div>
+          <div class="value"><b>우선 매칭</b><span>비즈니스 매칭 서비스 우선 이용</span></div>
+          <div class="value"><b>전시회 지원</b><span>국내외 전시회 공동관 우선 선정 및 참가비 지원</span></div>
+          <div class="value"><b>교육</b><span>교육·세미나 무료 또는 할인 참가</span></div>
+          <div class="value"><b>정보 제공</b><span>정부·지자체 지원사업 정보 우선 제공</span></div>
+          <div class="value"><b>자료 이용</b><span>표준 계약서 등 회원 전용 자료 이용</span></div>
+          <div class="value"><b>네트워킹</b><span>회원사 간 네트워킹 행사 초청</span></div>
+          <div class="value"><b>운영 참여</b><span>정회원: 총회 의결권 및 분과위원회 참여</span></div>
+        </div>
+      </article>
+      <article class="block" id="j-step"><h2>가입 절차</h2>
+        <ol class="steps">
+          <li><b>신청서 작성</b>온라인 가입 신청서 작성</li>
+          <li><b>서류 제출</b>사업자등록증 사본, 회사 소개서</li>
+          <li><b>검토·승인</b>사무국 검토 및 이사회 승인</li>
+          <li><b>회비 납부</b>입회비 및 연회비 납부</li>
+          <li><b>가입 완료</b>회원 등록, 회원사 페이지 개설</li>
+        </ol>
+        <p style="font-size:14px;color:var(--muted)">문의: 사무국 <span class="ph">전화번호</span> · <span class="ph">이메일</span></p>
+      </article>
+      <article class="block" id="j-apply"><h2>회원 가입 신청</h2>
+        <form class="f" data-form>
+          <div class="field"><label for="a-type">회원 구분</label><select id="a-type"><option>정회원</option><option>준회원</option><option>특별회원</option></select></div>
+          <div class="field"><label for="a-field">분야</label><select id="a-field"><option>IP·콘텐츠</option><option>제작·생산</option><option>수요기업</option></select></div>
+          <div class="field"><label for="a-co">회사명</label><input id="a-co" required></div>
+          <div class="field"><label for="a-ceo">대표자</label><input id="a-ceo" required></div>
+          <div class="field"><label for="a-biz">사업자등록번호</label><input id="a-biz" inputmode="numeric" placeholder="000-00-00000"></div>
+          <div class="field"><label for="a-web">홈페이지</label><input id="a-web" type="url" placeholder="https://"></div>
+          <div class="field"><label for="a-person">담당자 이름·직위</label><input id="a-person" required></div>
+          <div class="field"><label for="a-mail">담당자 이메일</label><input id="a-mail" type="email" required></div>
+          <div class="field full"><label for="a-file">첨부 (사업자등록증, 회사 소개서, 로고)</label><input id="a-file" type="file" multiple></div>
+          <label class="check full" for="a-agree"><input id="a-agree" type="checkbox" required> 개인정보 수집·이용에 동의합니다.</label>
+          <div class="full"><button class="btn primary" type="submit">가입 신청하기</button></div>
+        </form>
+      </article>
+    </div>
+  </div></div>
+</div>
+
+<!-- ================= 알림마당 ================= -->
+<div class="view" data-view="news" hidden>
+  <div class="page-hero"><div class="wrap"><span class="crumb">홈 › 알림마당</span><h1>알림마당</h1><p>협회의 새로운 소식과 행사, 업계 지원사업 정보를 가장 먼저 전해 드립니다.</p></div></div>
+  <div class="page-body"><div class="wrap">
+    <nav class="subnav" aria-label="알림마당 하위 메뉴"><a href="#n-notice">공지사항</a><a href="#n-press">협회 소식·보도자료</a><a href="#n-event">행사 일정</a><a href="#n-gov">지원사업 공고</a></nav>
+    <div class="content">
+      <article class="block" id="n-notice"><h2>공지사항</h2><div class="list-box" data-news="5"></div></article>
+      <article class="block" id="n-press"><h2>협회 소식·보도자료</h2><div class="cards"><div class="card"><div class="img mk" style="height:140px">썸네일</div><strong><span class="ph">소식 제목</span></strong><span class="date">2026.00.00</span></div><div class="card"><div class="img ip" style="height:140px">썸네일</div><strong><span class="ph">보도자료 제목</span></strong><span class="date">2026.00.00</span></div><div class="card"><div class="img dm" style="height:140px">썸네일</div><strong><span class="ph">회원사 소식 제목</span></strong><span class="date">2026.00.00</span></div></div></article>
+      <article class="block" id="n-event"><h2>행사 일정</h2><div style="display:flex;flex-direction:column;gap:12px" data-events="3"></div></article>
+      <article class="block" id="n-gov"><h2>업계 동향·지원사업 공고</h2><div class="list-box"><a href="#n-gov"><span class="tag">지원사업</span><span class="t"><span class="ph">공고 제목</span></span><span class="date">마감 2026.00.00</span></a><a href="#n-gov"><span class="tag">지원사업</span><span class="t"><span class="ph">공고 제목</span></span><span class="date">마감 2026.00.00</span></a><a href="#n-gov"><span class="tag">동향</span><span class="t"><span class="ph">시장 동향 제목</span></span><span class="date">2026.00.00</span></a></div></article>
+    </div>
+  </div></div>
+</div>
+
+<!-- ================= 자료실 ================= -->
+<div class="view" data-view="library" hidden>
+  <div class="page-hero"><div class="wrap"><span class="crumb">홈 › 자료실</span><h1>자료실</h1><p>협회 발간물과 업무에 필요한 서식, 가이드를 내려받으세요.</p></div></div>
+  <section class="band" style="padding-block:48px 84px"><div class="wrap">
+    <div class="tbl"><table><thead><tr><th>분류</th><th>자료</th><th>공개 범위</th></tr></thead><tbody>
+      <tr><td><strong>협회 발간물</strong></td><td>뉴스레터, 연차 보고서, 시장 동향 보고서</td><td>전체 공개</td></tr>
+      <tr><td><strong>표준 서식</strong></td><td>라이선스 계약서, 제작 발주서, 견적서, 비밀유지계약서(NDA)</td><td><span class="chip mk">회원 전용</span></td></tr>
+      <tr><td><strong>가이드</strong></td><td>저작권·상표권 가이드, 제품 안전 인증 안내, 굿즈 제작 가이드</td><td>전체 공개</td></tr>
+      <tr><td><strong>사진·영상</strong></td><td>행사 사진, 세미나 영상</td><td>전체 공개</td></tr>
+    </tbody></table></div>
+  </div></section>
+</div>
+
+<!-- ================= 고객지원 ================= -->
+<div class="view" data-view="support" hidden>
+  <div class="page-hero"><div class="wrap"><span class="crumb">홈 › 고객지원</span><h1>고객지원</h1><p>궁금한 점을 확인하거나 문의를 남겨 주세요.</p></div></div>
+  <div class="page-body"><div class="wrap">
+    <nav class="subnav" aria-label="고객지원 하위 메뉴"><a href="#faq">자주 묻는 질문</a><a href="#ask">1:1 문의</a><a href="#partner">제휴·후원 문의</a></nav>
+    <div class="content">
+      <article class="block faq" id="faq"><h2>자주 묻는 질문</h2>
+        <details open><summary>어떤 기업이 협회에 가입할 수 있나요?</summary><p>캐릭터·IP를 보유한 기업, 굿즈를 제작·생산하는 기업, 캐릭터와 굿즈가 필요한 기업과 기관이라면 가입할 수 있습니다. 창업 초기 기업과 1인 창작자는 준회원으로 가입할 수 있습니다.</p></details>
+        <details><summary>비회원도 비즈니스 매칭을 이용할 수 있나요?</summary><p>네, 비회원도 신청할 수 있습니다. 회원은 매칭 서비스를 우선으로 이용할 수 있습니다.</p></details>
+        <details><summary>매칭 신청 후 얼마 만에 연락을 받나요?</summary><p>접수 후 <span class="ph">영업일 수</span> 안에 사무국 담당자가 연락드립니다.</p></details>
+        <details><summary>협회가 라이선스 계약이나 제작 계약에 직접 참여하나요?</summary><p>계약은 당사자 간에 체결합니다. 협회는 파트너 연결, 표준 계약서 제공, 분쟁 예방을 위한 안내를 지원합니다.</p></details>
+        <details><summary>회원사 페이지 정보는 어떻게 수정하나요?</summary><p>로그인 후 마이페이지에서 회사 정보와 포트폴리오를 직접 수정할 수 있습니다. 수정 내용은 사무국 확인 후 게시됩니다.</p></details>
+        <details><summary>연회비는 언제 납부하나요?</summary><p><span class="ph">납부 시기 및 방법</span></p></details>
+      </article>
+      <article class="block" id="ask"><h2>1:1 문의</h2>
+        <form class="f" data-form>
+          <div class="field"><label for="q-type">문의 유형</label><select id="q-type"><option>회원 가입</option><option>매칭</option><option>사업 참여</option><option>홈페이지 이용</option><option>기타</option></select></div>
+          <div class="field"><label for="q-name">이름</label><input id="q-name" required></div>
+          <div class="field"><label for="q-co">회사명</label><input id="q-co"></div>
+          <div class="field"><label for="q-mail">이메일</label><input id="q-mail" type="email" required></div>
+          <div class="field full"><label for="q-title">제목</label><input id="q-title" required></div>
+          <div class="field full"><label for="q-msg">내용</label><textarea id="q-msg" required></textarea></div>
+          <label class="check full" for="q-agree"><input id="q-agree" type="checkbox" required> 개인정보 수집·이용에 동의합니다.</label>
+          <div class="full"><button class="btn primary" type="submit">문의 보내기</button></div>
+        </form>
+      </article>
+      <article class="block" id="partner"><h2>제휴·후원 문의</h2>
+        <p style="color:var(--muted)">협회와 함께 산업 생태계를 키워 갈 기관과 기업의 제휴와 후원을 기다립니다.</p>
+        <dl class="info">
+          <dt>제휴 분야</dt><dd>공동 사업, 행사 공동 주최, 교육 협력, 업무협약(MOU), 해외 기관 협력</dd>
+          <dt>후원 방법</dt><dd>행사 후원, 사업 후원, 기부금 (<span class="ph">기부금 단체 지정 여부</span>)</dd>
+          <dt>담당</dt><dd>사무국 <span class="ph">담당자명</span> · <span class="ph">전화번호</span> · <span class="ph">이메일</span></dd>
+        </dl>
+      </article>
+    </div>
+  </div></div>
+</div>
+</main>
+
+<footer><div class="wrap">
+  <nav aria-label="하단 메뉴"><a href="#support"><strong>개인정보처리방침</strong></a><a href="#support">이용약관</a><a href="#support">이메일무단수집거부</a><a href="#location">오시는 길</a><a href="#partner">제휴·후원 문의</a></nav>
+  <div class="addr">
+    <strong>한국스마트융합산업협회 · Korea Smart Convergence Industry Association</strong>
+    <span>주소 <span class="ph">협회 주소</span> · 대표전화 <span class="ph">000-0000-0000</span> · 이메일 <span class="ph">이메일 주소</span></span>
+    <span>고유번호 <span class="ph">000-00-00000</span> · 회장 김광만</span>
+    <span>© 2026 한국스마트융합산업협회. All rights reserved.</span>
+  </div>
+</div></footer>
+
+<script>
+(function(){
+  var TYPES={ip:'IP·콘텐츠',mk:'제작·생산',dm:'수요기업'};
+  var members=[
+    {k:'ip',d:'보유 캐릭터·IP 한 줄 소개',kw:'캐릭터 웹툰 애니메이션'},
+    {k:'mk',d:'주력 제작 품목 한 줄 소개',kw:'봉제 인형 문구 인쇄'},
+    {k:'dm',d:'필요한 콘텐츠·굿즈 한 줄 소개',kw:'판촉 유통 관광 축제'},
+    {k:'ip',d:'보유 캐릭터·IP 한 줄 소개',kw:'디자인 일러스트 게임'},
+    {k:'mk',d:'주력 제작 품목 한 줄 소개',kw:'의류 잡화 피규어 스마트 굿즈'},
+    {k:'dm',d:'필요한 콘텐츠·굿즈 한 줄 소개',kw:'공공기관 지자체 교육'},
+    {k:'ip',d:'보유 캐릭터·IP 한 줄 소개',kw:'캐릭터 라이선스'},
+    {k:'mk',d:'주력 제작 품목 한 줄 소개',kw:'패키지 인쇄'},
+    {k:'dm',d:'필요한 콘텐츠·굿즈 한 줄 소개',kw:'리테일 온라인'}
+  ];
+  function memberCard(m){
+    return '<a class="member" href="#matching"><div class="top"><div class="logo-box">로고</div><div style="display:flex;flex-direction:column;gap:6px;min-width:0"><strong><span class="ph">회원사명</span></strong><span><span class="chip '+m.k+'">'+TYPES[m.k]+'</span></span></div></div><p><span class="ph">'+m.d+'</span></p></a>';
+  }
+  document.querySelectorAll('[data-members]').forEach(function(el){
+    el.innerHTML=members.slice(0,+el.dataset.members).map(memberCard).join('');
+  });
+  var filter='all', list=document.getElementById('memberList'), search=document.getElementById('memberSearch'), note=document.getElementById('filterNote');
+  function renderMembers(){
+    var q=(search.value||'').trim();
+    var shown=members.filter(function(m){return (filter==='all'||m.k===filter)&&(!q||m.kw.indexOf(q)>-1||TYPES[m.k].indexOf(q)>-1);});
+    list.innerHTML=shown.length?shown.map(memberCard).join(''):'<p style="color:var(--muted)">조건에 맞는 회원사가 없습니다. 다른 키워드로 찾아보세요.</p>';
+    note.textContent=(filter==='all'?'전체':TYPES[filter])+' 회원사 '+shown.length+'곳';
+  }
+  document.querySelectorAll('.tab').forEach(function(b){
+    b.addEventListener('click',function(){
+      filter=b.dataset.filter;
+      document.querySelectorAll('.tab').forEach(function(x){x.setAttribute('aria-selected',x===b?'true':'false');});
+      renderMembers();
+    });
+  });
+  search.addEventListener('input',renderMembers);
+  renderMembers();
+
+  var news=[['공지','공지사항 제목'],['지원사업','지원사업 공고 제목'],['협회소식','협회 소식 제목'],['보도자료','보도자료 제목'],['공지','공지사항 제목']];
+  document.querySelectorAll('[data-news]').forEach(function(el){
+    el.innerHTML=news.slice(0,+el.dataset.news).map(function(n){return '<a href="#news"><span class="tag">'+n[0]+'</span><span class="t"><span class="ph">'+n[1]+'</span></span><span class="date">2026.00.00</span></a>';}).join('');
+  });
+  document.querySelectorAll('[data-events]').forEach(function(el){
+    var h='';for(var i=0;i<+el.dataset.events;i++){h+='<a class="event" href="#news"><div class="cal"><span>00월</span><b>00</b></div><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><strong><span class="ph">행사명</span></strong><span style="font-size:13px;color:var(--muted)"><span class="ph">장소 · 시간</span></span></div></a>';}
+    el.innerHTML=h;
+  });
+  var gal={ip:['캐릭터 이미지','캐릭터명','보유 회원사','라이선싱 문의 →'],mk:['제품 이미지','제품명','제작 회원사','제작 의뢰 →'],dm:['프로젝트 이미지','프로젝트명','참여 회원사','성공 사례 보기 →']};
+  document.querySelectorAll('[data-gallery]').forEach(function(el){
+    var g=gal[el.dataset.gallery],h='';
+    for(var i=0;i<3;i++){h+='<a class="card" href="#matching"><div class="img '+el.dataset.gallery+'" style="height:150px">'+g[0]+'</div><strong><span class="ph">'+g[1]+'</span></strong><span class="d"><span class="ph">'+g[2]+'</span></span><span class="go">'+g[3]+'</span></a>';}
+    el.innerHTML=h;
+  });
+
+  document.querySelectorAll('form[data-form]').forEach(function(f){
+    f.addEventListener('submit',function(e){
+      e.preventDefault();
+      var old=f.querySelector('.done'); if(old) old.remove();
+      var d=document.createElement('div'); d.className='done'; d.setAttribute('role','status');
+      d.textContent='접수 예시 화면입니다. 실제 홈페이지에서는 이 내용이 사무국으로 전달됩니다.';
+      f.appendChild(d);
+    });
+  });
+
+  // 화면 전환
+  var views={}; document.querySelectorAll('.view').forEach(function(v){views[v.dataset.view]=v;});
+  var navLinks=document.querySelectorAll('nav.main a');
+  var nav=document.getElementById('mainNav'), btn=document.getElementById('menuBtn');
+  btn.addEventListener('click',function(){var o=nav.classList.toggle('open');btn.setAttribute('aria-expanded',o?'true':'false');});
+  function route(){
+    var h=(location.hash||'#home').slice(1)||'home';
+    var target=views[h]?h:null, anchor=null;
+    if(!target){var el=document.getElementById(h); if(el){var v=el.closest('.view'); if(v){target=v.dataset.view; anchor=el;}}}
+    if(!target) target='home';
+    Object.keys(views).forEach(function(k){views[k].hidden=(k!==target);});
+    navLinks.forEach(function(a){ if(a.getAttribute('href')==='#'+target) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+    nav.classList.remove('open'); btn.setAttribute('aria-expanded','false');
+    if(anchor){ anchor.scrollIntoView({block:'start'}); } else { window.scrollTo(0,0); }
+  }
+  window.addEventListener('hashchange',route);
+  route();
+})();
+</script>
+
+</body>
+</html>
