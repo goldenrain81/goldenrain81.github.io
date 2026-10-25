@@ -225,6 +225,18 @@ form.f .full{grid-column:1/-1}
 .faq summary::before{content:"Q";color:var(--accent);font-weight:900}
 .faq details p{margin-top:10px;color:var(--muted);padding-left:22px}
 
+/* 공지 팝업 */
+.pop-bg{position:fixed;inset:0;z-index:50;background:rgba(15,16,20,.55);display:flex;align-items:center;justify-content:center;padding:max(16px,env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) max(16px,env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+.pop{width:100%;max-width:420px;background:var(--bg);color:var(--fg);border-radius:24px;overflow:hidden;box-shadow:0 24px 60px rgba(0,0,0,.3)}
+.pop-top{background:var(--hero);padding:32px 28px 26px;display:flex;flex-direction:column;align-items:center;gap:16px;text-align:center;border-bottom:1px solid var(--hero-line)}
+.pop-top img{height:56px;width:auto;background:#FFFFFF;border-radius:8px;padding:4px 8px}
+.pop-top h2{font-size:26px;font-weight:900;line-height:1.35}
+.pop-top p{font-size:15px;color:var(--muted)}
+.pop-foot{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 20px}
+.pop-foot label{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--muted);cursor:pointer}
+.pop-foot input{width:18px;height:18px}
+.pop-foot .btn{min-height:44px;padding:0 22px;font-size:15px}
+@media (prefers-reduced-motion:no-preference){.pop{animation:popin .3s ease}@keyframes popin{from{transform:translateY(12px);opacity:.6}to{transform:none;opacity:1}}}
 footer{border-top:1px solid var(--line);background:var(--bg)}
 footer .wrap{padding-block:40px 48px;display:flex;flex-direction:column;gap:20px}
 footer nav{display:flex;flex-wrap:wrap;gap:8px 22px;font-size:14px}
@@ -631,6 +643,20 @@ footer .addr strong{color:var(--fg);font-size:15px}
   </div>
 </div></footer>
 
+<div class="pop-bg" id="popNotice" hidden>
+  <div class="pop" role="dialog" aria-modal="true" aria-labelledby="popTitle">
+    <div class="pop-top">
+      <img src="logo.png" alt="KSCIA 한국스마트융합산업협회">
+      <h2 id="popTitle">홈페이지가<br>새롭게 태어납니다</h2>
+      <p>산업을 연결하고 융합으로 시장을 창출하다<br>한국스마트융합산업협회</p>
+    </div>
+    <div class="pop-foot">
+      <label for="popToday"><input type="checkbox" id="popToday"> 오늘 하루 보지 않기</label>
+      <button class="btn primary" type="button" id="popClose">닫기</button>
+    </div>
+  </div>
+</div>
+
 <script>
 (function(){
   var TYPES={ip:'IP·콘텐츠',mk:'제작·생산',dm:'유통·수요 기업'};
@@ -741,6 +767,25 @@ footer .addr strong{color:var(--fg);font-size:15px}
     a.addEventListener('click',function(){ pinnedUntil=Date.now()+800; markSub(a.parentNode,a.getAttribute('href').slice(1)); });
   });
   window.addEventListener('scroll',function(){ if(Date.now()>pinnedUntil) syncSubnav(); },{passive:true});
+
+
+  // 공지 팝업
+  (function(){
+    var bg=document.getElementById('popNotice'), close=document.getElementById('popClose'), today=document.getElementById('popToday');
+    var KEY='kscia-pop-hide', d=new Date(), stamp=d.getFullYear()+'-'+(d.getMonth()+1)+'-'+d.getDate();
+    var hidden=false; try{hidden=localStorage.getItem(KEY)===stamp;}catch(e){}
+    var h=(location.hash||'#home').slice(1);
+    if(hidden || (h && h!=='home')) return;
+    function shut(){
+      if(today.checked){ try{localStorage.setItem(KEY,stamp);}catch(e){} }
+      bg.hidden=true; document.removeEventListener('keydown',esc);
+    }
+    function esc(e){ if(e.key==='Escape') shut(); }
+    bg.hidden=false; close.focus();
+    close.addEventListener('click',shut);
+    bg.addEventListener('click',function(e){ if(e.target===bg) shut(); });
+    document.addEventListener('keydown',esc);
+  })();
 
   // 화면 전환
   var views={}; document.querySelectorAll('.view').forEach(function(v){views[v.dataset.view]=v;});
