@@ -256,6 +256,19 @@ form.f .full{grid-column:1/-1}
 .pt-logo.empty-slot{background:var(--soft);border-style:dashed;color:var(--muted);font-size:13px}
 @keyframes ptscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 @media (prefers-reduced-motion:reduce){.pt-track .dup{display:none!important}.pt-track{animation:none;flex-wrap:wrap;width:auto;padding-inline:max(16px,env(safe-area-inset-left,0px))}}
+/* 게시글 상세 */
+.post{max-width:860px;display:flex;flex-direction:column;gap:28px}
+.post-meta{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:14.5px;color:var(--muted)}
+.post-meta .tag{font-size:12.5px}
+.post-body{font-size:16.5px;line-height:1.9;display:flex;flex-direction:column;gap:16px;padding-bottom:28px;border-bottom:1px solid var(--line)}
+.post-body a{color:var(--mk-fg);text-decoration:underline;word-break:break-all}
+.post-body .empty{padding:0}
+.post-nav{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.post-nav a,.post-nav span.none{display:flex;gap:16px;align-items:center;padding:14px 4px;border-bottom:1px solid var(--line);font-size:15px}
+.post-nav b{flex:none;width:56px;font-size:13.5px;color:var(--muted)}
+.post-nav .pt{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.post-nav span.none{color:var(--muted)}
+.post-file{display:inline-flex;align-items:center;gap:8px}
 /* 메인 알림 게시판 */
 .nboard{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:8px 22px 10px;box-shadow:var(--shadow)}
 .nboard-top{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}
@@ -731,6 +744,19 @@ footer .addr strong{color:var(--fg);font-size:15px}
   </div></div>
 </div>
 
+<!-- ================= 게시글 상세 ================= -->
+<div class="view" data-view="post" hidden>
+  <div class="page-hero"><div class="wrap"><span class="crumb" id="postCrumb">홈 › 알림마당</span><h1 id="postTitle">게시글</h1><p class="post-meta" id="postMeta"></p></div></div>
+  <section class="band" style="padding-block:40px 72px"><div class="wrap">
+    <article class="post">
+      <div class="post-body" id="postBody"></div>
+      <div id="postLink"></div>
+      <nav class="post-nav" id="postNav" aria-label="이전글 다음글"></nav>
+      <div><a class="btn ghost small" id="postBack" href="#n-notice">목록으로</a></div>
+    </article>
+  </div></section>
+</div>
+
 <!-- ================= 자료실 ================= -->
 <div class="view" data-view="library" hidden>
   <div class="page-hero"><div class="wrap"><span class="crumb">홈 › 자료실</span><h1>자료실</h1><p>협회 발간물과 업무에 필요한 서식, 가이드를 내려받으세요.</p></div></div>
@@ -840,11 +866,11 @@ footer .addr strong{color:var(--fg);font-size:15px}
   // 비워 두거나 시트를 불러오지 못하면 아래 NOTICES 목록이 그대로 보입니다.
   var NOTICE_SHEET_ID='14PTsGJj_GkPB0ArhE5A0f6Z2NAByutzSeekyEBgM9SE';
   var NOTICES=[
-    {d:'2026-10-28',c:'행사안내',t:'스마트융합산업 포럼 2026 개최 안내',u:'',w:''},
-    {d:'2026-10-24',c:'행사안내',t:'회원사 대상 정부 R&D 지원사업 설명회 개최',u:'',w:''},
-    {d:'2026-10-18',c:'사업공고',t:'공공캐릭터 활성화 사업 지원 공모 안내',u:'',w:''},
-    {d:'2026-10-12',c:'보도자료',t:'한국스마트융합산업협회, 콘텐츠 산업 활성화를 위한 MOU 체결',u:'',w:''},
-    {d:'2026-10-05',c:'공지',t:'2026 캐릭터·콘텐츠 산업 트렌드 리포트 발간',u:'',w:''}
+    {d:'2026-10-28',c:'행사안내',t:'스마트융합산업 포럼 2026 개최 안내',u:'',w:'',b:''},
+    {d:'2026-10-24',c:'행사안내',t:'회원사 대상 정부 R&D 지원사업 설명회 개최',u:'',w:'',b:''},
+    {d:'2026-10-18',c:'사업공고',t:'공공캐릭터 활성화 사업 지원 공모 안내',u:'',w:'',b:''},
+    {d:'2026-10-12',c:'보도자료',t:'한국스마트융합산업협회, 콘텐츠 산업 활성화를 위한 MOU 체결',u:'',w:'',b:''},
+    {d:'2026-10-05',c:'공지',t:'2026 캐릭터·콘텐츠 산업 트렌드 리포트 발간',u:'',w:'',b:''}
   ];
   // 협력 기관 로고: {name:'기관명', src:'logo-파일명.png'} 형식으로 추가하세요.
   var PARTNERS=[];
@@ -854,7 +880,30 @@ footer .addr strong{color:var(--fg);font-size:15px}
   var SEC={'공지':'#n-notice','보도자료':'#n-press','행사안내':'#n-event','사업공고':'#n-gov'};
   function isNew(d){var t=Date.parse(d+'T00:00:00+09:00'),n=Date.now();return n-t>=0&&n-t<7*864e5;}
   function dot(d){return d.replace(/-/g,'.');}
-  function linkAttr(n){return n.u?'href="'+esc(n.u)+'" target="_blank" rel="noopener"':'href="'+(SEC[n.c]||'#n-notice')+'"';}
+  function pid(n){var h=5381,k=n.d+'|'+n.t;for(var i=0;i<k.length;i++){h=((h<<5)+h+k.charCodeAt(i))>>>0;}return 'post-'+n.d.replace(/-/g,'')+'-'+h.toString(36);}
+  function linkAttr(n){return 'href="#'+pid(n)+'"';}
+  var CURRENT=[];
+  function linkify(t){return t.replace(/https?:\/\/[^\s<]+/g,function(u){return '<a href="'+u+'" target="_blank" rel="noopener">'+u+'</a>';});}
+  function bodyHtml(b){
+    b=(b||'').trim(); if(!b) return '<p class="empty">상세 내용은 준비 중입니다. 문의: kscia2@naver.com</p>';
+    return b.split(/\n\s*\n/).map(function(par){return '<p>'+linkify(esc(par)).replace(/\n/g,'<br>')+'</p>';}).join('');
+  }
+  function renderPost(id){
+    var i=-1; CURRENT.forEach(function(n,k){ if(pid(n)===id) i=k; });
+    var T=document.getElementById('postTitle'),M=document.getElementById('postMeta'),B=document.getElementById('postBody'),L=document.getElementById('postLink'),N=document.getElementById('postNav'),K=document.getElementById('postBack'),C=document.getElementById('postCrumb');
+    if(i<0){ T.textContent='게시글을 찾을 수 없습니다'; M.textContent=''; B.innerHTML='<p class="empty">삭제되었거나 주소가 바뀐 글입니다.</p>'; L.innerHTML=''; N.innerHTML=''; K.setAttribute('href','#n-notice'); return; }
+    var n=CURRENT[i], back=SEC[n.c]||'#n-notice';
+    T.textContent=n.t;
+    C.textContent='홈 › 알림마당 › '+(n.c==='공지'?'공지사항':n.c);
+    M.innerHTML='<span class="tag">'+esc(n.c)+'</span><span>'+dot(n.d)+'</span>'+(n.w?'<span>'+esc(n.w)+'</span>':'');
+    B.innerHTML=bodyHtml(n.b);
+    L.innerHTML=n.u?'<a class="btn primary small post-file" href="'+esc(n.u)+'" target="_blank" rel="noopener">첨부·관련 자료 보기 ↗</a>':'';
+    var same=CURRENT.filter(function(x){return x.c===n.c;}), j=same.indexOf(n), newer=same[j-1], older=same[j+1];
+    function row(lbl,x){return x?'<a href="#'+pid(x)+'"><b>'+lbl+'</b><span class="pt">'+esc(x.t)+'</span><span class="date">'+dot(x.d)+'</span></a>':'<span class="none"><b>'+lbl+'</b>없음</span>';}
+    N.innerHTML=row('이전글',older)+row('다음글',newer);
+    K.setAttribute('href',back);
+    document.title=n.t+' | 한국스마트융합산업협회';
+  }
   function boardRows(list){
     if(!list.length) return '<li><p class="empty">등록된 글이 없습니다.</p></li>';
     return list.map(function(n){return '<li><a '+linkAttr(n)+'><span class="nd">'+dot(n.d)+'</span><span class="nt">'+esc(n.t)+'</span>'+(isNew(n.d)?'<span class="nnew">NEW</span>':'')+CH+'</a></li>';}).join('');
@@ -869,6 +918,7 @@ footer .addr strong{color:var(--fg);font-size:15px}
   }
   function renderNotices(all){
     all=all.slice().sort(function(a,b){return a.d<b.d?1:a.d>b.d?-1:0;});
+    CURRENT=all;
     function by(c){return all.filter(function(n){return n.c===c;});}
     var set=function(id,h){var el=document.getElementById(id); if(el) el.innerHTML=h;};
     set('np-notice',boardRows(all.slice(0,5)));
@@ -879,6 +929,7 @@ footer .addr strong{color:var(--fg);font-size:15px}
     set('listPress',listRows(by('보도자료').slice(0,10)));
     set('listGov',listRows(by('사업공고').slice(0,10)));
     document.querySelectorAll('[data-events]').forEach(function(el){ el.innerHTML=eventRows(by('행사안내').slice(0,+el.dataset.events)); });
+    var hh=(location.hash||'').slice(1); if(hh.indexOf('post-')===0) renderPost(hh);
   }
   function parseCSV(text){
     var rows=[],row=[],f='',q=false;
@@ -894,7 +945,7 @@ footer .addr strong{color:var(--fg);font-size:15px}
     fetch('https://docs.google.com/spreadsheets/d/'+NOTICE_SHEET_ID+'/gviz/tq?tqx=out:csv&sheet='+encodeURIComponent('공지'))
       .then(function(r){if(!r.ok)throw 0;return r.text();})
       .then(function(t){
-        var list=parseCSV(t).slice(1).map(function(r){return {d:normDate(r[0]),c:(r[1]||'공지').trim(),t:(r[2]||'').trim(),u:(r[3]||'').trim(),w:(r[4]||'').trim()};})
+        var list=parseCSV(t).slice(1).map(function(r){return {d:normDate(r[0]),c:(r[1]||'공지').trim(),t:(r[2]||'').trim(),u:(r[3]||'').trim(),w:(r[4]||'').trim(),b:(r[5]||'').replace(/\r/g,'')};})
           .filter(function(n){return n.d&&n.t&&/^https?:\/\//.test(n.u||'https://')});
         if(list.length) renderNotices(list);
       }).catch(function(){});
@@ -1014,10 +1065,13 @@ footer .addr strong{color:var(--fg);font-size:15px}
   function route(){
     var h=(location.hash||'#home').slice(1)||'home';
     var target=views[h]?h:null, anchor=null;
+    if(h.indexOf('post-')===0){ target='post'; renderPost(h); }
     if(!target){var el=document.getElementById(h); if(el){var v=el.closest('.view'); if(v){target=v.dataset.view; anchor=el;}}}
     if(!target) target='home';
     Object.keys(views).forEach(function(k){views[k].hidden=(k!==target);});
-    navLinks.forEach(function(a){ if(a.getAttribute('href')==='#'+target) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
+    if(target!=='post') document.title='한국스마트융합산업협회';
+    var navT=target==='post'?'news':target;
+    navLinks.forEach(function(a){ if(a.getAttribute('href')==='#'+navT) a.setAttribute('aria-current','page'); else a.removeAttribute('aria-current'); });
     nav.classList.remove('open'); btn.setAttribute('aria-expanded','false');
     if(anchor){ anchor.scrollIntoView({block:'start'}); } else { window.scrollTo(0,0); }
     var nv=views[target].querySelector('.subnav');
