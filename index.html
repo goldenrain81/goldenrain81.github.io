@@ -942,13 +942,13 @@ footer .addr strong{color:var(--fg);font-size:15px}
   function normDate(s){var m=/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/.exec(s||'');return m?m[1]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[3]).slice(-2):'';}
   renderNotices(NOTICES);
   if(NOTICE_SHEET_ID){
-    fetch('https://docs.google.com/spreadsheets/d/'+NOTICE_SHEET_ID+'/gviz/tq?tqx=out:csv&sheet='+encodeURIComponent('공지'))
+    fetch('https://docs.google.com/spreadsheets/d/'+NOTICE_SHEET_ID+'/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent('공지')+'&tq='+encodeURIComponent('select A,B,C,D,E,F')+'&_='+Date.now(),{cache:'no-store'})
       .then(function(r){if(!r.ok)throw 0;return r.text();})
       .then(function(t){
         var list=parseCSV(t).slice(1).map(function(r){return {d:normDate(r[0]),c:(r[1]||'공지').trim(),t:(r[2]||'').trim(),u:(r[3]||'').trim(),w:(r[4]||'').trim(),b:(r[5]||'').replace(/\r/g,'')};})
-          .filter(function(n){return n.d&&n.t&&/^https?:\/\//.test(n.u||'https://')});
+          .map(function(n){ if(n.u&&!/^https?:\/\//.test(n.u)) n.u=''; return n; }).filter(function(n){return n.d&&n.t;});
         if(list.length) renderNotices(list);
-      }).catch(function(){});
+      }).catch(function(e){ if(window.console) console.warn('공지 시트를 불러오지 못했습니다. 시트 공유 설정(링크가 있는 모든 사용자·뷰어)을 확인하세요.', e); });
   }
   // 협력 기관 로고 띠
   (function(){
