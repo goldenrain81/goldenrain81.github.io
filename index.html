@@ -84,8 +84,8 @@ section.band.soft{background:var(--soft)}
 
 /* hero */
 .hero{background:var(--hero)}
-.hero .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:40px;padding-block:36px}
-.hero-copy{flex:1 1 540px;min-width:0;display:flex;flex-direction:column;gap:18px}
+.hero .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:40px;padding-block:30px}
+.hero-copy{flex:1 1 540px;min-width:0;display:flex;flex-direction:column;gap:16px}
 .eyebrow{align-self:flex-start;font-size:13px;font-weight:700;padding:6px 14px;border-radius:999px;background:var(--bg);border:1px solid var(--hero-line);color:var(--ip-fg)}
 .hero h1{font-size:clamp(30px,3.6vw,44px);font-weight:900;letter-spacing:-.03em;line-height:1.2}
 .hero-copy p{font-size:16.5px;color:var(--muted);max-width:36em}
@@ -227,6 +227,35 @@ form.f .full{grid-column:1/-1}
 .faq summary::before{content:"Q";color:var(--accent);font-weight:900}
 .faq details p{margin-top:10px;color:var(--muted);padding-left:22px}
 
+/* 빠른 메뉴 · CIPD 배너 · 행사 · 협력 기관 */
+.quick{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin-top:2px}
+.qtile{display:flex;flex-direction:row;align-items:center;justify-content:flex-start;gap:8px;padding:8px 10px;border:1px solid var(--line);border-radius:16px;background:var(--card);text-align:center;transition:border-color .15s ease}
+.qtile:hover{border-color:var(--fg)}
+.qi{width:34px;height:34px;flex:none;border-radius:10px;display:flex;align-items:center;justify-content:center}
+.ql{font-size:13.5px;font-weight:700;line-height:1.3;text-align:left;word-break:keep-all}
+@media (max-width:520px){.quick{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.lower-grid{display:flex;flex-wrap:wrap;gap:32px;align-items:stretch}
+.cipd-banner{flex:3 1 520px;min-width:0;display:flex;flex-wrap:wrap;align-items:center;gap:24px;padding:28px;border-radius:24px;background:var(--hero);border:1px solid var(--hero-line)}
+.cb-text{flex:1 1 280px;min-width:0;display:flex;flex-direction:column;gap:12px}
+.cb-text h2{font-size:26px;font-weight:900;line-height:1.3}
+.cb-text h2 span{color:var(--mk-fg)}
+.cb-text p{color:var(--muted)}
+.cipd-banner img{flex:1 1 260px;min-width:0;width:100%;max-width:360px;height:auto;border-radius:16px}
+.ev-col{flex:2 1 300px;min-width:0}
+.ev-list{display:flex;flex-direction:column;gap:12px}
+.empty{padding:18px 4px;color:var(--muted);font-size:14.5px}
+.partners{padding-block:48px 56px;background:var(--bg);border-top:1px solid var(--line);overflow:hidden}
+.pt-head{display:flex;flex-wrap:wrap;align-items:baseline;gap:6px 14px;margin-bottom:22px}
+.pt-head h2{font-size:22px;font-weight:900}
+.pt-head p{color:var(--muted);font-size:14.5px}
+.pt-viewport{overflow:hidden;-webkit-mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent);mask-image:linear-gradient(90deg,transparent,#000 6%,#000 94%,transparent)}
+.pt-track{display:flex;gap:16px;width:max-content;animation:ptscroll 40s linear infinite}
+.pt-viewport:hover .pt-track{animation-play-state:paused}
+.pt-logo{flex:none;width:180px;height:72px;border:1px solid var(--line);border-radius:14px;background:#FFFFFF;display:flex;align-items:center;justify-content:center;padding:10px 16px}
+.pt-logo img{max-width:100%;max-height:100%;object-fit:contain}
+.pt-logo.empty-slot{background:var(--soft);border-style:dashed;color:var(--muted);font-size:13px}
+@keyframes ptscroll{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+@media (prefers-reduced-motion:reduce){.pt-track .dup{display:none!important}.pt-track{animation:none;flex-wrap:wrap;width:auto;padding-inline:max(16px,env(safe-area-inset-left,0px))}}
 /* 메인 알림 게시판 */
 .nboard{background:var(--card);border:1px solid var(--line);border-radius:22px;padding:8px 22px 10px;box-shadow:var(--shadow)}
 .nboard-top{display:flex;align-items:center;justify-content:space-between;gap:12px;border-bottom:1px solid var(--line)}
@@ -349,7 +378,7 @@ footer .addr strong{color:var(--fg);font-size:15px}
         <span class="eyebrow">콘텐츠 × 제조 × 유통·수요 → 국내에서 세계로</span>
         <h1>콘텐츠로 산업을 연결하고<br>융합으로 시장을 창출하다</h1>
         <p>캐릭터·IP 기업, 굿즈·상품 제작사, 유통·수요 기업이 한자리에 모여 함께 성장하고, 함께 세계 시장으로 나아가는 스마트 융합 산업 생태계를 만듭니다.</p>
-        <div class="row-btns"><a class="btn primary" href="#members">회원사 찾기</a><a class="btn ghost" href="#join">협회 가입하기</a></div>
+        <nav class="quick" aria-label="빠른 메뉴"><a class="qtile" href="#b-cipd"><span class="qi" style="background:var(--ip-bg);color:var(--ip-fg)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="6.5"/><path d="M20 20l-4.2-4.2"/></svg></span><span class="ql">CIPD 진단 신청</span></a><a class="qtile" href="https://forms.gle/TrtffW7TWx1VnFwy8" target="_blank" rel="noopener"><span class="qi" style="background:var(--mk-bg);color:var(--mk-fg)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="10" cy="8" r="4"/><path d="M3 20c0-3.9 3.1-6.5 7-6.5s7 2.6 7 6.5"/><path d="M19 8v6M16 11h6"/></svg></span><span class="ql">회원 가입 신청 ↗</span></a><a class="qtile" href="https://forms.gle/CFWxgmJSrRi5sqv58" target="_blank" rel="noopener"><span class="qi" style="background:var(--dm-bg);color:var(--dm-fg)"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9.5 14.5l5-5"/><path d="M11 6.5l1.7-1.7a4 4 0 0 1 5.6 5.6L16.5 12"/><path d="M13 17.5l-1.7 1.7a4 4 0 0 1-5.6-5.6L7.5 12"/></svg></span><span class="ql">비즈니스 매칭 ↗</span></a><a class="qtile" href="https://forms.gle/uBC1VQSQfVpRRjeq5" target="_blank" rel="noopener"><span class="qi" style="background:#EEEAF6;color:#5E1D5E"><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5.5h16v10H9l-5 4z"/><path d="M8 10.5h8"/></svg></span><span class="ql">1:1 문의 ↗</span></a></nav>
       </div>
       <div class="flow-img">
         <div class="nboard">
@@ -394,14 +423,14 @@ footer .addr strong{color:var(--fg);font-size:15px}
     </div>
   </div></section>
 
-  <section class="band soft"><div class="wrap news-grid">
-    <div style="flex:3 1 460px">
-      <div class="sec-head" style="margin-bottom:18px"><h2 style="font-size:24px">공지사항 · 협회 소식</h2><a class="more" href="#news">더 보기 →</a></div>
-      <div class="list-box" data-news="5"></div>
+  <section class="band soft lower-band"><div class="wrap lower-grid">
+    <div class="cipd-banner">
+      <div class="cb-text"><span class="eyebrow2">협회 대표 프로그램</span><h2>캐릭터 IP 진단·평가<br><span>(CIPD)</span></h2><p>6개 분야, 30여 개 항목으로 캐릭터 IP의 사업화 가능성을 진단하고 맞춤형 전략과 협력 파트너를 연결합니다.</p><div class="row-btns"><a class="btn primary small" href="https://forms.gle/uBC1VQSQfVpRRjeq5" target="_blank" rel="noopener">진단 신청하기 ↗</a><a class="btn ghost small" href="#b-cipd">자세히 보기</a></div></div>
+      <img src="cipd.png" width="578" height="260" alt="CIPD 진단평가 화면을 돋보기로 살펴보는 캐릭터들" loading="lazy">
     </div>
-    <div style="flex:2 1 300px">
-      <div class="sec-head" style="margin-bottom:18px"><h2 style="font-size:24px">행사 일정</h2><a class="more" href="#news">캘린더 →</a></div>
-      <div style="display:flex;flex-direction:column;gap:12px" data-events="3"></div>
+    <div class="ev-col">
+      <div class="sec-head" style="margin-bottom:16px"><h2 style="font-size:24px">행사 일정</h2><a class="more" href="#n-event">전체 보기 →</a></div>
+      <div class="ev-list" data-events="3"></div>
     </div>
   </div></section>
 
@@ -417,6 +446,12 @@ footer .addr strong{color:var(--fg);font-size:15px}
       <div class="type"><strong>특별회원</strong><span>지자체, 공공기관, 대학, 유관 단체</span></div>
     </div>
   </div></section>
+
+  <section class="partners" aria-labelledby="ptTitle"><div class="wrap">
+    <div class="pt-head"><h2 id="ptTitle">함께하는 기관</h2><p>협회와 협력하는 기관과 회원사입니다.</p></div>
+  </div>
+  <div class="pt-viewport"><div class="pt-track" id="ptTrack"></div></div>
+  </section>
 </div>
 
 <!-- ================= 협회소개 ================= -->
@@ -729,10 +764,10 @@ footer .addr strong{color:var(--fg);font-size:15px}
   <div class="page-body"><div class="wrap">
     <nav class="subnav" aria-label="알림마당 하위 메뉴"><a href="#n-notice">공지사항</a><a href="#n-press">협회 소식·보도자료</a><a href="#n-event">행사 일정</a><a href="#n-gov">지원사업 공고</a></nav>
     <div class="content">
-      <article class="block" id="n-notice"><h2>공지사항</h2><div class="list-box" data-news="5"></div></article>
-      <article class="block" id="n-press"><h2>협회 소식·보도자료</h2><div class="cards"><div class="card"><div class="img mk" style="height:140px">썸네일</div><strong><span class="ph">소식 제목</span></strong><span class="date">2026.00.00</span></div><div class="card"><div class="img ip" style="height:140px">썸네일</div><strong><span class="ph">보도자료 제목</span></strong><span class="date">2026.00.00</span></div><div class="card"><div class="img dm" style="height:140px">썸네일</div><strong><span class="ph">회원사 소식 제목</span></strong><span class="date">2026.00.00</span></div></div></article>
+      <article class="block" id="n-notice"><h2>공지사항</h2><div class="list-box" id="listNotice"></div></article>
+      <article class="block" id="n-press"><h2>협회 소식·보도자료</h2><div class="list-box" id="listPress"></div></article>
       <article class="block" id="n-event"><h2>행사 일정</h2><div style="display:flex;flex-direction:column;gap:12px" data-events="3"></div></article>
-      <article class="block" id="n-gov"><h2>업계 동향·지원사업 공고</h2><div class="list-box"><a href="#n-gov"><span class="tag">지원사업</span><span class="t"><span class="ph">공고 제목</span></span><span class="date">마감 2026.00.00</span></a><a href="#n-gov"><span class="tag">지원사업</span><span class="t"><span class="ph">공고 제목</span></span><span class="date">마감 2026.00.00</span></a><a href="#n-gov"><span class="tag">동향</span><span class="t"><span class="ph">시장 동향 제목</span></span><span class="date">2026.00.00</span></a></div></article>
+      <article class="block" id="n-gov"><h2>업계 동향·지원사업 공고</h2><div class="list-box" id="listGov"></div></article>
     </div>
   </div></div>
 </div>
@@ -841,14 +876,78 @@ footer .addr strong{color:var(--fg);font-size:15px}
   search.addEventListener('input',renderMembers);
   renderMembers();
 
-  var news=[['공지','스마트융합산업 포럼 2026 개최 안내','2026.10.28'],['지원사업','회원사 대상 정부 R&amp;D 지원사업 설명회 개최','2026.10.24'],['사업공고','공공캐릭터 활성화 사업 지원 공모 안내','2026.10.18'],['보도자료','한국스마트융합산업협회, 콘텐츠 산업 활성화를 위한 MOU 체결','2026.10.12'],['발간','2026 캐릭터·콘텐츠 산업 트렌드 리포트 발간','2026.10.05']];
-  document.querySelectorAll('[data-news]').forEach(function(el){
-    el.innerHTML=news.slice(0,+el.dataset.news).map(function(n){return '<a href="#news"><span class="tag">'+n[0]+'</span><span class="t">'+n[1]+'</span><span class="date">'+n[2]+'</span></a>';}).join('');
-  });
-  document.querySelectorAll('[data-events]').forEach(function(el){
-    var h='';for(var i=0;i<+el.dataset.events;i++){h+='<a class="event" href="#news"><div class="cal"><span>00월</span><b>00</b></div><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><strong><span class="ph">행사명</span></strong><span style="font-size:13px;color:var(--muted)"><span class="ph">장소 · 시간</span></span></div></a>';}
-    el.innerHTML=h;
-  });
+  // ===== 공지 데이터 (구글 시트 연동) =====
+  // 공지 관리용 구글 시트 ID를 아래 따옴표 안에 넣으면, 시트에 적은 공지가 홈페이지에 자동으로 나타납니다.
+  // 비워 두거나 시트를 불러오지 못하면 아래 NOTICES 목록이 그대로 보입니다.
+  var NOTICE_SHEET_ID='14PTsGJj_GkPB0ArhE5A0f6Z2NAByutzSeekyEBgM9SE';
+  var NOTICES=[
+    {d:'2026-10-28',c:'행사안내',t:'스마트융합산업 포럼 2026 개최 안내',u:'',w:''},
+    {d:'2026-10-24',c:'행사안내',t:'회원사 대상 정부 R&D 지원사업 설명회 개최',u:'',w:''},
+    {d:'2026-10-18',c:'사업공고',t:'공공캐릭터 활성화 사업 지원 공모 안내',u:'',w:''},
+    {d:'2026-10-12',c:'보도자료',t:'한국스마트융합산업협회, 콘텐츠 산업 활성화를 위한 MOU 체결',u:'',w:''},
+    {d:'2026-10-05',c:'공지',t:'2026 캐릭터·콘텐츠 산업 트렌드 리포트 발간',u:'',w:''}
+  ];
+  // 협력 기관 로고: {name:'기관명', src:'logo-파일명.png'} 형식으로 추가하세요.
+  var PARTNERS=[];
+
+  function esc(x){return String(x==null?'':x).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];});}
+  var CH='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
+  var SEC={'공지':'#n-notice','보도자료':'#n-press','행사안내':'#n-event','사업공고':'#n-gov'};
+  function isNew(d){var t=Date.parse(d+'T00:00:00+09:00'),n=Date.now();return n-t>=0&&n-t<7*864e5;}
+  function dot(d){return d.replace(/-/g,'.');}
+  function linkAttr(n){return n.u?'href="'+esc(n.u)+'" target="_blank" rel="noopener"':'href="'+(SEC[n.c]||'#n-notice')+'"';}
+  function boardRows(list){
+    if(!list.length) return '<li><p class="empty">등록된 글이 없습니다.</p></li>';
+    return list.map(function(n){return '<li><a '+linkAttr(n)+'><span class="nd">'+dot(n.d)+'</span><span class="nt">'+esc(n.t)+'</span>'+(isNew(n.d)?'<span class="nnew">NEW</span>':'')+CH+'</a></li>';}).join('');
+  }
+  function listRows(list){
+    if(!list.length) return '<p class="empty">등록된 글이 없습니다.</p>';
+    return list.map(function(n){return '<a '+linkAttr(n)+'><span class="tag">'+esc(n.c)+'</span><span class="t">'+esc(n.t)+'</span><span class="date">'+dot(n.d)+'</span></a>';}).join('');
+  }
+  function eventRows(list){
+    if(!list.length) return '<p class="empty">예정된 행사가 없습니다.</p>';
+    return list.map(function(n){var p=n.d.split('-');return '<a class="event" '+linkAttr(n)+'><div class="cal"><span>'+(+p[1])+'월</span><b>'+(+p[2])+'</b></div><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><strong>'+esc(n.t)+'</strong><span style="font-size:13px;color:var(--muted)">'+esc(n.w||dot(n.d))+'</span></div></a>';}).join('');
+  }
+  function renderNotices(all){
+    all=all.slice().sort(function(a,b){return a.d<b.d?1:a.d>b.d?-1:0;});
+    function by(c){return all.filter(function(n){return n.c===c;});}
+    var set=function(id,h){var el=document.getElementById(id); if(el) el.innerHTML=h;};
+    set('np-notice',boardRows(all.slice(0,5)));
+    set('np-press',boardRows(by('보도자료').slice(0,5)));
+    set('np-event',boardRows(by('행사안내').slice(0,5)));
+    set('np-biz',boardRows(by('사업공고').slice(0,5)));
+    set('listNotice',listRows(all.slice(0,10)));
+    set('listPress',listRows(by('보도자료').slice(0,10)));
+    set('listGov',listRows(by('사업공고').slice(0,10)));
+    document.querySelectorAll('[data-events]').forEach(function(el){ el.innerHTML=eventRows(by('행사안내').slice(0,+el.dataset.events)); });
+  }
+  function parseCSV(text){
+    var rows=[],row=[],f='',q=false;
+    for(var i=0;i<text.length;i++){var ch=text[i];
+      if(q){ if(ch==='"'){ if(text[i+1]==='"'){f+='"';i++;} else q=false; } else f+=ch; }
+      else if(ch==='"') q=true; else if(ch===','){row.push(f);f='';} else if(ch==='\n'){row.push(f);rows.push(row);row=[];f='';} else if(ch!=='\r') f+=ch; }
+    if(f||row.length){row.push(f);rows.push(row);}
+    return rows;
+  }
+  function normDate(s){var m=/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/.exec(s||'');return m?m[1]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[3]).slice(-2):'';}
+  renderNotices(NOTICES);
+  if(NOTICE_SHEET_ID){
+    fetch('https://docs.google.com/spreadsheets/d/'+NOTICE_SHEET_ID+'/gviz/tq?tqx=out:csv&sheet='+encodeURIComponent('공지'))
+      .then(function(r){if(!r.ok)throw 0;return r.text();})
+      .then(function(t){
+        var list=parseCSV(t).slice(1).map(function(r){return {d:normDate(r[0]),c:(r[1]||'공지').trim(),t:(r[2]||'').trim(),u:(r[3]||'').trim(),w:(r[4]||'').trim()};})
+          .filter(function(n){return n.d&&n.t&&/^https?:\/\//.test(n.u||'https://')});
+        if(list.length) renderNotices(list);
+      }).catch(function(){});
+  }
+  // 협력 기관 로고 띠
+  (function(){
+    var tr=document.getElementById('ptTrack'); if(!tr) return;
+    var items=PARTNERS.length?PARTNERS.map(function(p){return '<div class="pt-logo"><img src="'+esc(p.src)+'" alt="'+esc(p.name)+'" loading="lazy"></div>';})
+      :Array.apply(null,Array(8)).map(function(){return '<div class="pt-logo empty-slot">협력 기관 로고</div>';});
+    var one=items.join('');
+    tr.innerHTML=one+'<div class="dup" style="display:contents" aria-hidden="true">'+one+'</div>';
+  })();
   var gal={ip:['캐릭터 이미지','캐릭터명','보유 회원사','라이선싱 문의 →'],mk:['제품 이미지','제품명','제작 회원사','제작 의뢰 →'],dm:['프로젝트 이미지','프로젝트명','참여 회원사','성공 사례 보기 →']};
   document.querySelectorAll('[data-gallery]').forEach(function(el){
     var g=gal[el.dataset.gallery],h='';
@@ -935,7 +1034,7 @@ footer .addr strong{color:var(--fg);font-size:15px}
   })();
 
 
-  // 메인 알림 게시판: 탭 전환, NEW 표시
+  // 메인 알림 게시판: 탭 전환
   (function(){
     var tabs=[].slice.call(document.querySelectorAll('.ntabs [role="tab"]')), more=document.getElementById('nMore');
     function pick(t){
@@ -945,11 +1044,6 @@ footer .addr strong{color:var(--fg);font-size:15px}
     tabs.forEach(function(b,i){
       b.addEventListener('click',function(){pick(b);});
       b.addEventListener('keydown',function(e){ var d=e.key==='ArrowRight'?1:e.key==='ArrowLeft'?-1:0; if(!d)return; var n=tabs[(i+d+tabs.length)%tabs.length]; pick(n); n.focus(); });
-    });
-    var now=Date.now();
-    document.querySelectorAll('.nlist a[data-date]').forEach(function(a){
-      var t=Date.parse(a.dataset.date+'T00:00:00+09:00');
-      if(now-t>=0 && now-t<7*864e5){ var s=document.createElement('span'); s.className='nnew'; s.textContent='NEW'; a.querySelector('.nt').after(s); }
     });
   })();
 
