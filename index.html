@@ -879,7 +879,7 @@ footer .addr strong{color:var(--fg);font-size:15px}
   var CH='<svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg>';
   var SEC={'공지':'#n-notice','보도자료':'#n-press','행사안내':'#n-event','사업공고':'#n-gov'};
   function isNew(d){var t=Date.parse(d+'T00:00:00+09:00'),n=Date.now();return n-t>=0&&n-t<7*864e5;}
-  function dot(d){return d.replace(/-/g,'.');}
+  function dot(d){return d?d.replace(/-/g,'.'):'날짜 미정';}
   function pid(n){var h=5381,k=n.d+'|'+n.t;for(var i=0;i<k.length;i++){h=((h<<5)+h+k.charCodeAt(i))>>>0;}return 'post-'+n.d.replace(/-/g,'')+'-'+h.toString(36);}
   function linkAttr(n){return 'href="#'+pid(n)+'"';}
   var CURRENT=[];
@@ -914,6 +914,7 @@ footer .addr strong{color:var(--fg);font-size:15px}
   }
   function eventRows(list){
     if(!list.length) return '<p class="empty">예정된 행사가 없습니다.</p>';
+    list=list.filter(function(n){return n.d;}); if(!list.length) return '<p class="empty">예정된 행사가 없습니다.</p>';
     return list.map(function(n){var p=n.d.split('-');return '<a class="event" '+linkAttr(n)+'><div class="cal"><span>'+(+p[1])+'월</span><b>'+(+p[2])+'</b></div><div style="display:flex;flex-direction:column;gap:2px;min-width:0"><strong>'+esc(n.t)+'</strong><span style="font-size:13px;color:var(--muted)">'+esc(n.w||dot(n.d))+'</span></div></a>';}).join('');
   }
   function renderNotices(all){
@@ -939,14 +940,22 @@ footer .addr strong{color:var(--fg);font-size:15px}
     if(f||row.length){row.push(f);rows.push(row);}
     return rows;
   }
-  function normDate(s){var m=/(\d{4})\D+(\d{1,2})\D+(\d{1,2})/.exec(s||'');return m?m[1]+'-'+('0'+m[2]).slice(-2)+'-'+('0'+m[3]).slice(-2):'';}
+  function normDate(s){
+    s=String(s||'').trim(); var m, p2=function(x){return ('0'+x).slice(-2);};
+    if((m=/Date\((\d{4}),\s*(\d{1,2}),\s*(\d{1,2})/.exec(s))) return m[1]+'-'+p2(+m[2]+1)+'-'+p2(m[3]);
+    if((m=/(\d{4})\s*[.\-\/년]\s*(\d{1,2})\s*[.\-\/월]\s*(\d{1,2})/.exec(s))) return m[1]+'-'+p2(m[2])+'-'+p2(m[3]);
+    if((m=/^(\d{4})(\d{2})(\d{2})$/.exec(s))) return m[1]+'-'+m[2]+'-'+m[3];
+    if((m=/^(\d{1,2})\/(\d{1,2})\/(\d{4})/.exec(s))) return m[3]+'-'+p2(m[1])+'-'+p2(m[2]);
+    if(/^\d{5}(\.\d+)?$/.test(s)){ var d=new Date(Date.UTC(1899,11,30)+Math.floor(+s)*864e5); return d.getUTCFullYear()+'-'+p2(d.getUTCMonth()+1)+'-'+p2(d.getUTCDate()); }
+    return '';
+  }
   renderNotices(NOTICES);
   if(NOTICE_SHEET_ID){
     fetch('https://docs.google.com/spreadsheets/d/'+NOTICE_SHEET_ID+'/gviz/tq?tqx=out:csv&headers=1&sheet='+encodeURIComponent('공지')+'&tq='+encodeURIComponent('select A,B,C,D,E,F')+'&_='+Date.now(),{cache:'no-store'})
       .then(function(r){if(!r.ok)throw 0;return r.text();})
       .then(function(t){
         var list=parseCSV(t).slice(1).map(function(r){return {d:normDate(r[0]),c:(r[1]||'공지').trim(),t:(r[2]||'').trim(),u:(r[3]||'').trim(),w:(r[4]||'').trim(),b:(r[5]||'').replace(/\r/g,'')};})
-          .map(function(n){ if(n.u&&!/^https?:\/\//.test(n.u)) n.u=''; return n; }).filter(function(n){return n.d&&n.t;});
+          .map(function(n){ if(n.u&&!/^https?:\/\//.test(n.u)) n.u=''; return n; }).filter(function(n){return n.t;});
         if(list.length) renderNotices(list);
       }).catch(function(e){ if(window.console) console.warn('공지 시트를 불러오지 못했습니다. 시트 공유 설정(링크가 있는 모든 사용자·뷰어)을 확인하세요.', e); });
   }
